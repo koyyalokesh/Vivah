@@ -1,0 +1,44 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #392d35;
+  background: #faf6f3;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 640px;
+  margin: 12vh auto;
+  padding: 24px;
+}
+h1 {
+  font-size: 3rem;
+  margin: 12px 0;
+}
+.eyebrow {
+  color: #85576c;
+}
+section {
+  margin-top: 32px;
+  padding: 24px;
+  border: 1px solid #dfcdd5;
+  border-radius: 12px;
+  background: white;
+}
+button {
+  padding: 12px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: #79445d;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+button:focus-visible {
+  outline: 3px solid #392d35;
+  outline-offset: 3px;
+}
