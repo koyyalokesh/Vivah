@@ -13,7 +13,7 @@ Copy-Item apps/web/.env.example apps/web/.env.local
 npm run dev
 ```
 
-Environment files are optional with default settings. React: http://localhost:5173. Express: http://localhost:3001. The React screen checks `/api/health` through Vite's proxy, preserving `/api`. It displays loading, connected, and unavailable states, with Retry. Stop the backend to try the failure state; restart and retry.
+Environment files are optional with default settings. React: http://localhost:5173. Express: http://localhost:3001. The public Vivah homepage is available at `/`; `/login` and `/signup` currently display placeholders for the next development milestone. Vite forwards `/api/*` requests to the local Express server without removing the `/api` prefix.
 
 Run independently in two terminals:
 
@@ -42,11 +42,11 @@ Invoke-RestMethod http://localhost:3001/api/health
 Invoke-RestMethod http://localhost:5173/api/health
 ```
 
-Both return `{ "data": { "status": "ok" } }`. Health checks API liveness only. Unknown routes return JSON 404; malformed JSON returns 400; oversized JSON returns 413; unexpected errors return generic 500 without stack traces. Ports are fixed; if changing the API port, update the proxy target too.
+Both return `{ "data": { "status": "ok" } }`. These commands verify API liveness and the frontend development proxy. Unknown API routes return JSON 404; malformed JSON returns 400; oversized JSON returns 413; unexpected errors return generic 500 without stack traces. Ports are fixed; if changing the API port, update the proxy target too.
 
 ## Structure and boundaries
 
-- `apps/web`: browser UI and fetch calls.
+- `apps/web`: React homepage, client-side routes and future browser API clients.
 - `apps/api/src/app.ts`: creates and default-exports Express; importing it does not open a port.
 - `apps/api/src/server.ts`: local listener using validated configuration.
 - `docs/PRD.md`, `docs/SYSTEM_ARCHITECTURE.md`, `docs/DATABASE_DESIGN.md`, `docs/API_DESIGN.md`: existing design baseline, preserved.
@@ -61,6 +61,6 @@ The intended hosting uses separate Vercel web and API projects. Vercel can impor
 
 ## Scope and next task
 
-Only health and connectivity are implemented. No authentication, MongoDB, wedding features, R2, email, Places, jobs, or dashboard. Existing historical implementation notes are not proof of implemented features here.
+The public marketing homepage and placeholder login/signup routes are implemented. The dashboard shown on the homepage is an illustrative preview rather than a working application feature. The API currently exposes only its health endpoint. Authentication, MongoDB, wedding features, R2, email, Places and jobs are not implemented. Existing historical implementation notes are not proof of implemented features here.
 
 Next: resolve the documented session-storage/hash choice, then implement authentication. Recoverable gallery tokens, RSVP scope, dates, media verification, email throughput, and public sharing remain decisions for their respective milestones. No business contracts are changed by this scaffold.

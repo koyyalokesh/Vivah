@@ -1,52 +1,43 @@
-import { useEffect, useState } from 'react';
-import { getHealth } from './api/health';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { HomePage } from './routes/HomePage';
+import { PlaceholderPage } from './routes/PlaceholderPage';
 
 export default function App() {
-  const [attempt, setAttempt] = useState(0);
-  const [status, setStatus] = useState<'loading' | 'connected' | 'unavailable'>(
-    'loading',
-  );
-  useEffect(() => {
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 5000);
-    let active = true;
-    getHealth(controller.signal)
-      .then(() => {
-        if (active) setStatus('connected');
-      })
-      .catch(() => {
-        if (active) setStatus('unavailable');
-      })
-      .finally(() => window.clearTimeout(timeout));
-    return () => {
-      active = false;
-      window.clearTimeout(timeout);
-      controller.abort();
-    };
-  }, [attempt]);
   return (
-    <main>
-      <p className="eyebrow">Your wedding, together</p>
-      <h1>Vivah</h1>
-      <p>A shared space for planning and celebrating your wedding.</p>
-      <section aria-label="API connection">
-        <p role="status" aria-live="polite">
-          {status === 'loading'
-            ? 'Connecting to the API…'
-            : status === 'connected'
-              ? 'API connected'
-              : 'API unavailable. Start the backend and try again.'}
-        </p>
-        <button
-          disabled={status === 'loading'}
-          onClick={() => {
-            setStatus('loading');
-            setAttempt((value) => value + 1);
-          }}
-        >
-          Retry connection
-        </button>
-      </section>
-    </main>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route
+          path="/login"
+          element={
+            <PlaceholderPage
+              eyebrow="Welcome back"
+              title="Log in to Vivah"
+              description="The secure login experience will be available in the next development milestone."
+            />
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <PlaceholderPage
+              eyebrow="Start planning"
+              title="Create your Vivah workspace"
+              description="Account creation will be available in the next development milestone."
+            />
+          }
+        />
+        <Route
+          path="*"
+          element={
+            <PlaceholderPage
+              eyebrow="Page not found"
+              title="This page is not available"
+              description="Return to the Vivah homepage to continue exploring."
+            />
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
