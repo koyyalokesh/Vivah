@@ -10,7 +10,7 @@ type Fields = 'email' | 'password';
 export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setAuthenticatedUser } = useAuth();
+  const { setAuthenticatedSession } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -26,8 +26,8 @@ export function LoginPage() {
     setIsSubmitting(true);
 
     try {
-      const user = await login({ email, password });
-      setAuthenticatedUser(user);
+      const session = await login({ email, password });
+      setAuthenticatedSession(session);
       const destination =
         typeof location.state === 'object' &&
         location.state &&

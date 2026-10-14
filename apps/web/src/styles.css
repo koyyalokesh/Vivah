@@ -1360,6 +1360,285 @@ summary:focus-visible {
   margin-top: 18px;
 }
 
+.wedding-setup-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 8% 6%, rgb(255 255 255 / 90%), transparent 24%),
+    var(--ivory);
+}
+.setup-header {
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0 max(32px, calc((100vw - 1360px) / 2));
+  border-bottom: 1px solid rgb(225 228 223 / 90%);
+  background: rgb(247 246 242 / 92%);
+  backdrop-filter: blur(16px);
+}
+.setup-account {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.account-avatar {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--teal-pale);
+  color: var(--teal-dark);
+  font-size: 0.7rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+}
+.account-name {
+  color: var(--ink);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.setup-logout {
+  padding: 7px 0 7px 13px;
+  border: 0;
+  border-left: 1px solid var(--line);
+  background: transparent;
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+.setup-logout:hover {
+  color: var(--teal);
+}
+.setup-shell {
+  width: min(1160px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 58px 0 72px;
+}
+.setup-intro {
+  max-width: 700px;
+  margin-bottom: 30px;
+}
+.setup-meta {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 16px;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 550;
+}
+.setup-meta .section-eyebrow {
+  margin: 0;
+}
+.setup-intro h1 {
+  margin-bottom: 10px;
+  font-size: clamp(2.2rem, 4vw, 3.35rem);
+  line-height: 1.08;
+}
+.setup-intro > p {
+  max-width: 610px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+.setup-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.65fr) minmax(310px, 0.85fr);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 18px 55px rgb(32 42 44 / 6%);
+}
+.wedding-form {
+  display: grid;
+  gap: 21px;
+  padding: 38px 42px 40px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+.setup-field {
+  display: grid;
+  gap: 7px;
+  align-content: start;
+}
+.setup-field label {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--ink);
+  font-size: 0.77rem;
+  font-weight: 650;
+}
+.setup-field label > span {
+  margin-right: auto;
+  color: var(--teal);
+}
+.setup-field label small {
+  color: var(--muted);
+  font-size: 0.67rem;
+  font-weight: 500;
+}
+.setup-field input,
+.setup-field select,
+.setup-field textarea {
+  width: 100%;
+  border: 1px solid #ccd2ce;
+  border-radius: 9px;
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 0.86rem;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease;
+}
+.setup-field input,
+.setup-field select {
+  min-height: 49px;
+  padding: 0 14px;
+}
+.setup-field textarea {
+  min-height: 92px;
+  resize: vertical;
+  padding: 13px 14px;
+  line-height: 1.5;
+}
+.setup-field input:focus,
+.setup-field select:focus,
+.setup-field textarea:focus {
+  border-color: var(--teal);
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(36 80 76 / 13%);
+}
+.setup-field input[aria-invalid='true'],
+.setup-field select[aria-invalid='true'],
+.setup-field textarea[aria-invalid='true'] {
+  border-color: #a83f3f;
+}
+.field-help {
+  color: var(--muted);
+  font-size: 0.67rem;
+  line-height: 1.4;
+}
+.setup-actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 3px;
+}
+.setup-actions .button {
+  min-width: 190px;
+}
+.setup-actions p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.7rem;
+}
+.setup-actions p span {
+  color: var(--teal);
+}
+.setup-aside {
+  position: relative;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  padding: 40px 36px 30px;
+  border-left: 1px solid var(--line);
+  background: #eef3f0;
+}
+.aside-label {
+  color: var(--teal);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.setup-aside h2 {
+  margin: 10px 0 29px;
+  font-size: 1.55rem;
+}
+.setup-aside ol {
+  display: grid;
+  gap: 24px;
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.setup-aside li {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 12px;
+  align-items: start;
+}
+.setup-aside li > span {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #bdcbc5;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 65%);
+  color: var(--teal-dark);
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.setup-aside strong {
+  display: block;
+  margin: 2px 0 5px;
+  color: var(--ink);
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.84rem;
+}
+.setup-aside li p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.5;
+}
+.setup-art {
+  position: relative;
+  height: 135px;
+  margin-top: 35px;
+  opacity: 0.9;
+}
+.arch {
+  position: absolute;
+  bottom: -28px;
+  border: 1px solid rgb(36 80 76 / 35%);
+  border-bottom: 0;
+  border-radius: 100px 100px 0 0;
+}
+.arch-one {
+  left: 8%;
+  width: 150px;
+  height: 145px;
+  background: rgb(255 255 255 / 32%);
+}
+.arch-two {
+  right: -3%;
+  width: 118px;
+  height: 110px;
+  border-color: rgb(185 173 153 / 80%);
+}
+.art-ring {
+  position: absolute;
+  left: 46%;
+  top: 22px;
+  width: 54px;
+  height: 54px;
+  border: 12px solid rgb(36 80 76 / 10%);
+  border-radius: 50%;
+}
+
 @keyframes spin {
   to {
     transform: rotate(360deg);
@@ -1426,6 +1705,23 @@ summary:focus-visible {
   }
   .faq-layout .section-heading > p {
     max-width: 680px;
+  }
+  .setup-card {
+    grid-template-columns: 1fr;
+  }
+  .setup-aside {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+  .setup-aside ol {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .setup-aside li {
+    grid-template-columns: 1fr;
+  }
+  .setup-art {
+    display: none;
   }
 }
 
@@ -1615,6 +1911,77 @@ summary:focus-visible {
   }
   .app-header {
     margin-bottom: 35px;
+  }
+  .setup-header {
+    height: 68px;
+    padding: 0 20px;
+  }
+  .account-name {
+    display: none;
+  }
+  .setup-logout {
+    padding-left: 9px;
+    font-size: 0.7rem;
+  }
+  .setup-shell {
+    width: calc(100% - 40px);
+    padding: 38px 0 50px;
+  }
+  .setup-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .setup-intro {
+    margin-bottom: 24px;
+  }
+  .setup-intro h1 {
+    font-size: 2.2rem;
+  }
+  .setup-card {
+    overflow: visible;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .wedding-form,
+  .setup-aside {
+    border: 1px solid var(--line);
+    border-radius: 16px;
+  }
+  .wedding-form {
+    gap: 19px;
+    padding: 25px 20px;
+    background: white;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 19px;
+  }
+  .setup-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 13px;
+  }
+  .setup-actions .button {
+    width: 100%;
+  }
+  .setup-actions p {
+    text-align: center;
+  }
+  .setup-aside {
+    margin-top: 18px;
+    padding: 27px 21px;
+  }
+  .setup-aside h2 {
+    margin-bottom: 23px;
+  }
+  .setup-aside ol {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .setup-aside li {
+    grid-template-columns: 28px 1fr;
   }
 }
 

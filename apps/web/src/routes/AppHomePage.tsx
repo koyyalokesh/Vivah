@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useAuth } from '../auth/useAuth';
+import { WeddingSetupPage } from './WeddingSetupPage';
 
 export function AppHomePage() {
-  const { user, signOut } = useAuth();
+  const { user, membership, wedding, signOut } = useAuth();
   const [error, setError] = useState('');
   const [isSigningOut, setIsSigningOut] = useState(false);
 
@@ -16,6 +17,8 @@ export function AppHomePage() {
       setIsSigningOut(false);
     }
   }
+
+  if (!wedding || !membership) return <WeddingSetupPage />;
 
   return (
     <main className="app-welcome-page">
@@ -41,12 +44,12 @@ export function AppHomePage() {
         <span className="section-eyebrow">Account ready</span>
         <h1>Welcome to Vivah, {user?.name}.</h1>
         <p>
-          Your secure account is ready. Creating your wedding workspace will be
-          the next development milestone.
+          Your wedding workspace is ready. Continue planning one feature at a
+          time.
         </p>
         <div className="account-detail">
-          <span>Signed in as</span>
-          <strong>{user?.email}</strong>
+          <span>Your wedding</span>
+          <strong>{wedding.title}</strong>
         </div>
         {error ? (
           <div className="form-alert" role="alert">

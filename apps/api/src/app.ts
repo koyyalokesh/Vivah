@@ -6,9 +6,13 @@ import { authService } from './modules/auth/auth.service.js';
 import type { AuthServiceContract } from './modules/auth/auth.types.js';
 import { ensureDatabaseConnection } from './database/connection.js';
 import { errorHandler } from './middleware/error-handler.js';
+import { createWeddingRouter } from './modules/wedding/wedding.router.js';
+import { weddingService } from './modules/wedding/wedding.service.js';
+import type { WeddingServiceContract } from './modules/wedding/wedding.types.js';
 
 type AppOptions = {
   service?: AuthServiceContract;
+  weddingService?: WeddingServiceContract;
   databaseMiddleware?: RequestHandler;
   enableRateLimit?: boolean;
 };
@@ -16,6 +20,7 @@ type AppOptions = {
 export function createApp(options: AppOptions = {}) {
   const app = express();
   const service = options.service ?? authService;
+  const currentWeddingService = options.weddingService ?? weddingService;
   const databaseMiddleware =
     options.databaseMiddleware ?? ensureDatabaseConnection;
 
@@ -29,7 +34,12 @@ export function createApp(options: AppOptions = {}) {
   app.use(
     '/api/auth',
     databaseMiddleware,
-    createAuthRouter(service, options.enableRateLimit),
+    createAuthRouter(service, currentWeddingService, options.enableRateLimit),
+  );
+  app.use(
+    '/api/wedding',
+    databaseMiddleware,
+    createWeddingRouter(service, currentWeddingService),
   );
   app.use((_req, res) => {
     res

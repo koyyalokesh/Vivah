@@ -9,7 +9,7 @@ type Fields = 'name' | 'email' | 'password';
 
 export function SignupPage() {
   const navigate = useNavigate();
-  const { setAuthenticatedUser } = useAuth();
+  const { setAuthenticatedSession } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,8 +32,8 @@ export function SignupPage() {
 
     setIsSubmitting(true);
     try {
-      const user = await signup({ name, email, password });
-      setAuthenticatedUser(user);
+      const session = await signup({ name, email, password });
+      setAuthenticatedSession(session);
       navigate('/app', { replace: true });
     } catch (caught) {
       if (caught instanceof ApiError) {

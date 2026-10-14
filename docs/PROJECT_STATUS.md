@@ -1,7 +1,7 @@
 # Vivah Project Status
 
-**Last updated:** 14 October 2026  
-**Current state:** Authentication foundation completed  
+**Last updated:** 15 October 2026
+**Current state:** Wedding workspace creation completed
 **Current branch:** `dev`
 
 ## Purpose
@@ -46,8 +46,8 @@ Verified:
 
 ### 2. Public marketing homepage
 
-**Status:** Completed  
-**Completed:** 14 October 2026  
+**Status:** Completed
+**Completed:** 14 October 2026
 **Commit:** `099c65e` — `feat: add Vivah marketing homepage`
 
 Delivered:
@@ -103,13 +103,45 @@ Current limitation:
 - Users can create and use an account, but cannot create or join a wedding yet.
 - Password reset is deferred until the email integration milestone. V1 does not require signup email verification.
 
+### 4. Wedding workspace creation
+
+**Status:** Completed
+**Completed:** 15 October 2026
+**Commit:** Not committed yet
+
+Delivered:
+
+- Wedding and WeddingMembership persistence with V1 uniqueness and role indexes.
+- Authenticated `POST /api/wedding` and `GET /api/wedding` endpoints.
+- Wedding creation derives the creator from the authenticated session and never accepts client-controlled ownership.
+- Initial `ADMIN` membership creation with compensating wedding rollback if membership creation fails.
+- Stable wedding website slug generation with collision retries.
+- `/api/auth/login` and `/api/auth/me` now restore the current wedding and membership context.
+- Responsive wedding setup UI at `/app`, based on the approved Vivah desktop and mobile Stitch designs.
+- Required wedding details, optional manual location and description, inline validation, loading state, logout and post-creation workspace state.
+
+Verified:
+
+- Formatting, ESLint, frontend and backend TypeScript checks, production builds and 21 API/service tests passed.
+- An isolated local MongoDB end-to-end run verified signup, empty initial wedding context, wedding creation, automatic `ADMIN` membership, session restoration and `GET /api/wedding` through the Vite `/api` proxy.
+- The returned wedding ID remained consistent across creation, `/api/auth/me` and `GET /api/wedding`.
+
+Current limitation:
+
+- The post-creation workspace remains a simple welcome state; dashboard business modules are not implemented.
+- Gallery token creation is deferred until the gallery milestone because stable raw-token recovery is unresolved in the database design.
+- Wedding cover upload is deferred until the Cloudflare R2 milestone.
+- A fresh manual browser QA pass for the final wedding form and responsive states is still pending.
+
 ## Current working capabilities
 
 - Public Vivah marketing homepage.
 - Responsive frontend routing for the homepage and authentication pages.
 - Signup, login, logout and browser session restoration.
 - MongoDB-backed User and Session persistence.
-- Protected `/app` route for authenticated users.
+- MongoDB-backed Wedding and WeddingMembership persistence.
+- Protected `/app` route with wedding setup and restored wedding context.
+- Wedding creation with automatic Admin membership.
 - Express API health endpoint.
 - Local frontend-to-backend API proxy.
 - Shared repository tooling for development, formatting, linting, type checking, and builds.
@@ -117,7 +149,7 @@ Current limitation:
 ## Not implemented yet
 
 - Password reset.
-- Wedding creation and Wedding Member management.
+- Wedding Member management.
 - Dashboard business data.
 - Events, tasks, guests, invitations, RSVPs, expenses, or vendors.
 - Wedding website publishing or livestream configuration.
@@ -128,13 +160,12 @@ Current limitation:
 
 ## Next recommended milestone
 
-Build the Wedding creation and first-membership slice incrementally:
+Build Wedding Member management incrementally:
 
-1. Add the Wedding and WeddingMembership models and required indexes.
-2. Add authenticated `POST /api/wedding` and `GET /api/wedding` endpoints.
-3. Create the Wedding and its first `ADMIN` membership atomically.
-4. Build the wedding setup form and redirect authenticated users without a wedding to it.
-5. Verify that the session determines the user and that wedding identity is never accepted from the client.
+1. Define the Admin-only invitation creation and acceptance contract.
+2. Add wedding-scoped membership reads and Admin permission checks.
+3. Add the first member-management UI without expanding into events or dashboard modules.
+4. Verify last-Admin protection, duplicate invitations and cross-wedding isolation.
 
 This milestone is planned and has not started.
 

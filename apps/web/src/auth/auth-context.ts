@@ -1,11 +1,22 @@
 import { createContext } from 'react';
-import type { User } from '../api/auth';
+import type {
+  AuthSession,
+  User,
+  Wedding,
+  WeddingMembership,
+} from '../api/auth';
 
 export type AuthContextValue = {
   user: User | null;
+  membership: WeddingMembership | null;
+  wedding: Wedding | null;
   isLoading: boolean;
   signedOutFromLocationKey: string | null;
-  setAuthenticatedUser(user: User): void;
+  setAuthenticatedSession(session: AuthSession): void;
+  setWeddingContext(context: {
+    membership: WeddingMembership;
+    wedding: Wedding;
+  }): void;
   signOut(): Promise<void>;
 };
 

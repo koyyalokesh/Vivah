@@ -5,17 +5,21 @@ import {
   requireAuthentication,
   verifyRequestOrigin,
 } from './auth.middleware.js';
-import type { AuthServiceContract } from './auth.types.js';
+import type {
+  AuthServiceContract,
+  CurrentWeddingContextReader,
+} from './auth.types.js';
 import { MongoRateLimitStore } from './rate-limit.store.js';
 
 const authenticationWindowMs = 15 * 60 * 1000;
 
 export function createAuthRouter(
   service: AuthServiceContract,
+  weddingContext: CurrentWeddingContextReader,
   enableRateLimit = true,
 ) {
   const router = Router();
-  const controller = createAuthController(service);
+  const controller = createAuthController(service, weddingContext);
   const limit: RequestHandler = enableRateLimit
     ? rateLimit({
         windowMs: authenticationWindowMs,

@@ -4,12 +4,40 @@ export type User = {
   email: string;
 };
 
+export type WeddingMembership = {
+  id: string;
+  userId: string;
+  weddingId: string;
+  role: 'ADMIN' | 'MANAGER';
+  joinedAt: string;
+};
+
+export type Wedding = {
+  id: string;
+  brideName: string;
+  groomName: string;
+  title: string;
+  description?: string;
+  weddingDate: string;
+  timeZone: string;
+  location?: { formattedAddress?: string };
+  website: { slug: string; theme: string; isPublished: boolean };
+  gallery: { isEnabled: boolean; guestUploadsEnabled: boolean };
+  livestream: { youtubeUrl: string | null; isEnabled: boolean };
+};
+
+export type AuthSession = {
+  user: User;
+  membership: WeddingMembership | null;
+  wedding: Wedding | null;
+};
+
 type AuthResponse = {
-  data: { user: User; hasWedding: boolean };
+  data: AuthSession & { hasWedding: boolean };
 };
 
 type MeResponse = {
-  data: { user: User; membership: null; wedding: null };
+  data: AuthSession;
 };
 
 type ApiErrorBody = {
@@ -31,7 +59,10 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, options?: RequestInit): Promise<T> {
+export async function apiRequest<T>(
+  path: string,
+  options?: RequestInit,
+): Promise<T> {
   const response = await fetch(path, {
     ...options,
     credentials: 'same-origin',
@@ -58,26 +89,26 @@ export async function signup(input: {
   email: string;
   password: string;
 }) {
-  const response = await request<AuthResponse>('/api/auth/signup', {
+  const response = await apiRequest<AuthResponse>('/api/auth/signup', {
     method: 'POST',
     body: JSON.stringify(input),
   });
-  return response.data.user;
+  return response.data;
 }
 
 export async function login(input: { email: string; password: string }) {
-  const response = await request<AuthResponse>('/api/auth/login', {
+  const response = await apiRequest<AuthResponse>('/api/auth/login', {
     method: 'POST',
     body: JSON.stringify(input),
   });
-  return response.data.user;
+  return response.data;
 }
 
 export async function logout() {
-  await request<{ success: true }>('/api/auth/logout', { method: 'POST' });
+  await apiRequest<{ success: true }>('/api/auth/logout', { method: 'POST' });
 }
 
-export async function getCurrentUser() {
-  const response = await request<MeResponse>('/api/auth/me');
-  return response.data.user;
+export async function getCurrentSession() {
+  const response = await apiRequest<MeResponse>('/api/auth/me');
+  return response.data;
 }

@@ -1,11 +1,16 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
-import { ApiError, getCurrentUser, logout, type User } from '../api/auth';
+import {
+  ApiError,
+  getCurrentSession,
+  logout,
+  type AuthSession,
+} from '../api/auth';
 import { AuthContext } from './auth-context';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const location = useLocation();
-  const [user, setUser] = useState<User | null>(null);
+  const [session, setSession] = useState<AuthSession | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [signedOutFromLocationKey, setSignedOutFromLocationKey] = useState<
     string | null
@@ -14,9 +19,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let active = true;
 
-    void getCurrentUser()
-      .then((currentUser) => {
-        if (active) setUser(currentUser);
+    void getCurrentSession()
+      .then((currentSession) => {
+        if (active) setSession(currentSession);
       })
       .catch((error: unknown) => {
         if (!(error instanceof ApiError && error.status === 401)) {
@@ -34,12 +39,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const value = useMemo(
     () => ({
-      user,
+      user: session?.user ?? null,
+      membership: session?.membership ?? null,
+      wedding: session?.wedding ?? null,
       isLoading,
       signedOutFromLocationKey,
-      setAuthenticatedUser: (authenticatedUser: User) => {
+      setAuthenticatedSession: (authenticatedSession: AuthSession) => {
         setSignedOutFromLocationKey(null);
-        setUser(authenticatedUser);
+        setSession(authenticatedSession);
+      },
+      setWeddingContext: (context: {
+        membership: NonNullable<AuthSession['membership']>;
+        wedding: NonNullable<AuthSession['wedding']>;
+      }) => {
+        setSession((current) =>
+          current ? { ...current, ...context } : current,
+        );
       },
       signOut: async () => {
         try {
@@ -50,10 +65,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           }
         }
         setSignedOutFromLocationKey(location.key);
-        setUser(null);
+        setSession(null);
       },
     }),
-    [isLoading, location.key, signedOutFromLocationKey, user],
+    [isLoading, location.key, session, signedOutFromLocationKey],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

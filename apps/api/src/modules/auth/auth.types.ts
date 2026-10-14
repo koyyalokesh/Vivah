@@ -22,6 +22,33 @@ export type AuthResult = {
   expiresAt: Date;
 };
 
+export type CurrentWeddingContext = {
+  membership: {
+    id: string;
+    userId: string;
+    weddingId: string;
+    role: 'ADMIN' | 'MANAGER';
+    joinedAt: Date;
+  };
+  wedding: {
+    id: string;
+    brideName: string;
+    groomName: string;
+    title: string;
+    description?: string;
+    weddingDate: string;
+    timeZone: string;
+    location?: { formattedAddress?: string };
+    website: { slug: string; theme: string; isPublished: boolean };
+    gallery: { isEnabled: boolean; guestUploadsEnabled: boolean };
+    livestream: { youtubeUrl: string | null; isEnabled: boolean };
+  };
+};
+
+export interface CurrentWeddingContextReader {
+  getContextForUser(userId: string): Promise<CurrentWeddingContext | null>;
+}
+
 export interface UserRepository {
   findByEmail(emailNormalized: string): Promise<UserRecord | null>;
   findById(id: string): Promise<PublicUser | null>;

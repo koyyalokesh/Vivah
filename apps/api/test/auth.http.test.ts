@@ -8,6 +8,7 @@ import type {
   AuthServiceContract,
   PublicUser,
 } from '../src/modules/auth/auth.types.js';
+import type { WeddingServiceContract } from '../src/modules/wedding/wedding.types.js';
 
 const user: PublicUser = {
   id: 'user-1',
@@ -49,11 +50,24 @@ class FakeAuthService implements AuthServiceContract {
 
 const databaseReady: RequestHandler = (_req, _res, next) => next();
 
-function testApp(service = new FakeAuthService()) {
+const noWeddingService: WeddingServiceContract = {
+  async getContextForUser() {
+    return null;
+  },
+  async createWedding() {
+    throw new Error('Not used in authentication tests.');
+  },
+};
+
+function testApp(
+  service = new FakeAuthService(),
+  weddingService: WeddingServiceContract = noWeddingService,
+) {
   return {
     service,
     app: createApp({
       service,
+      weddingService,
       databaseMiddleware: databaseReady,
       enableRateLimit: false,
     }),
@@ -70,7 +84,14 @@ describe('authentication HTTP API', () => {
     });
 
     expect(response.status).toBe(201);
-    expect(response.body).toEqual({ data: { user, hasWedding: false } });
+    expect(response.body).toEqual({
+      data: {
+        user,
+        hasWedding: false,
+        membership: null,
+        wedding: null,
+      },
+    });
     expect(response.headers['set-cookie']?.[0]).toContain('vivah_session=');
     expect(response.headers['set-cookie']?.[0]).toContain('HttpOnly');
     expect(response.headers['set-cookie']?.[0]).toContain('SameSite=Lax');
@@ -120,5 +141,27 @@ describe('authentication HTTP API', () => {
 
     expect(response.status).toBe(403);
     expect(response.body.error.code).toBe('INVALID_ORIGIN');
+  });
+
+  it('removes a new session when wedding context loading fails', async () => {
+    const service = new FakeAuthService();
+    const failingWeddingService: WeddingServiceContract = {
+      async getContextForUser() {
+        throw new Error('context unavailable');
+      },
+      async createWedding() {
+        throw new Error('Not used in authentication tests.');
+      },
+    };
+    const { app } = testApp(service, failingWeddingService);
+
+    const response = await request(app).post('/api/auth/login').send({
+      email: user.email,
+      password: 'strong-password',
+    });
+
+    expect(response.status).toBe(500);
+    expect(response.headers['set-cookie']).toBeUndefined();
+    expect(service.activeToken).toBeUndefined();
   });
 });
