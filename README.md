@@ -1,6 +1,6 @@
 # Vivah
 
-Vivah is a wedding planning application. The initial scaffold contains React + TypeScript + Vite and a Node.js + Express + TypeScript API in one npm-workspaces repository.
+Vivah is a wedding planning application. It uses React + TypeScript + Vite and a Node.js + Express + TypeScript API in one npm-workspaces repository. The current application includes the public homepage and the authentication foundation.
 
 ## Local setup
 
@@ -13,7 +13,14 @@ Copy-Item apps/web/.env.example apps/web/.env.local
 npm run dev
 ```
 
-Environment files are optional with default settings. React: http://localhost:5173. Express: http://localhost:3001. The public Vivah homepage is available at `/`; `/login` and `/signup` currently display placeholders for the next development milestone. Vite forwards `/api/*` requests to the local Express server without removing the `/api` prefix.
+Set `MONGODB_URI` in `apps/api/.env` to a development-only MongoDB database. The example uses a local database at `mongodb://127.0.0.1:27017/vivah_dev`. React runs at http://localhost:5173 and Express runs at http://localhost:3001. Vite forwards `/api/*` requests to Express without removing the `/api` prefix.
+
+Available application routes:
+
+- `/`: public Vivah homepage.
+- `/signup`: account creation.
+- `/login`: account login.
+- `/app`: authenticated account-ready screen. Wedding setup is the next milestone.
 
 Run independently in two terminals:
 
@@ -30,6 +37,7 @@ npm run dev:api
 | `npm run dev:web`      | Start frontend                     |
 | `npm run dev:api`      | Start API                          |
 | `npm run typecheck`    | Check both TypeScript projects     |
+| `npm test`             | Run API authentication tests       |
 | `npm run lint`         | Check code with ESLint             |
 | `npm run format:check` | Check formatting                   |
 | `npm run format`       | Format scaffold; docs are excluded |
@@ -42,25 +50,32 @@ Invoke-RestMethod http://localhost:3001/api/health
 Invoke-RestMethod http://localhost:5173/api/health
 ```
 
-Both return `{ "data": { "status": "ok" } }`. These commands verify API liveness and the frontend development proxy. Unknown API routes return JSON 404; malformed JSON returns 400; oversized JSON returns 413; unexpected errors return generic 500 without stack traces. Ports are fixed; if changing the API port, update the proxy target too.
+Both return `{ "data": { "status": "ok" } }`. These commands verify API liveness and the frontend development proxy. The API also exposes signup, login, logout and current-user routes under `/api/auth`. Unknown API routes return JSON 404; malformed JSON returns 400; oversized JSON returns 413; unexpected errors return generic 500 without stack traces. Ports are fixed; if changing the API port, update the proxy target too.
 
 ## Structure and boundaries
 
 - `apps/web`: React homepage, client-side routes and future browser API clients.
 - `apps/api/src/app.ts`: creates and default-exports Express; importing it does not open a port.
 - `apps/api/src/server.ts`: local listener using validated configuration.
+- `apps/api/src/modules/auth`: authentication routes, controller, service, repositories, validation and Mongoose models.
+- `apps/web/src/auth`: browser session state and protected-route handling.
 - `docs/PRD.md`, `docs/SYSTEM_ARCHITECTURE.md`, `docs/DATABASE_DESIGN.md`, `docs/API_DESIGN.md`: existing design baseline, preserved.
+- `docs/PROJECT_STATUS.md`: living record of completed implementation milestones and the next planned step.
 
-Future features use domain routers, controllers, services, and wedding-scoped persistence. Protected operations must derive wedding identity from membership and scope queries and referenced resources. This scaffold does not implement authentication or tenant isolation. Shared packages wait until real shared contracts exist.
+Future features use domain routers, controllers, services, and wedding-scoped persistence. Protected wedding operations must derive wedding identity from membership and scope queries and referenced resources. Wedding and membership persistence begins in the next milestone. Shared packages wait until real shared contracts exist.
 
 ## Configuration and hosting direction
 
-Actual `.env` files are ignored; commit examples only. Backend validates PORT and NODE_ENV using Zod. API_PROXY_TARGET configures the local Vite server and is not bundled into browser code. Never put server credentials in VITE_* variables.
+Actual `.env` files are ignored; commit examples only. The backend validates its port, environment, MongoDB URI, application origin and session duration. `API_PROXY_TARGET` configures the local Vite server and is not bundled into browser code. Never put server credentials in `VITE_*` variables.
+
+Passwords are hashed with Argon2id. A custom server-side session stores only a SHA-256 token hash in MongoDB; the browser receives the raw random token in the `HttpOnly` `vivah_session` cookie. Sessions expire after seven days by default. Production cookies are also `Secure`, and state-changing auth requests validate their browser origin.
+
+Signup and login limits are stored in MongoDB so every Vercel instance shares the same counters. Client identifiers are protected with HMAC-SHA-256 and expired counters are removed through a TTL index. Set a unique random `RATE_LIMIT_HMAC_SECRET` of at least 32 characters in production; the example development value must never be used for deployment.
 
 The intended hosting uses separate Vercel web and API projects. Vercel can import the default-exported Express app at src/app.ts. Production API rewrites and SPA fallback must be configured and tested in a deployment milestone; Vite's proxy is local only. No external infrastructure is provisioned here.
 
 ## Scope and next task
 
-The public marketing homepage and placeholder login/signup routes are implemented. The dashboard shown on the homepage is an illustrative preview rather than a working application feature. The API currently exposes only its health endpoint. Authentication, MongoDB, wedding features, R2, email, Places and jobs are not implemented. Existing historical implementation notes are not proof of implemented features here.
+The public marketing homepage and authentication foundation are implemented. The dashboard shown on the homepage is an illustrative preview rather than a working application feature. MongoDB currently stores users, sessions and shared authentication rate-limit counters. Password reset, signup email verification, wedding features, R2, email, Places and jobs are not implemented. Existing historical implementation notes are not proof of implemented features here.
 
-Next: resolve the documented session-storage/hash choice, then implement authentication. Recoverable gallery tokens, RSVP scope, dates, media verification, email throughput, and public sharing remain decisions for their respective milestones. No business contracts are changed by this scaffold.
+Next: implement wedding creation and create the first Admin membership atomically. Recoverable gallery tokens, RSVP scope, dates, media verification, email throughput, and public sharing remain decisions for their respective milestones.

@@ -9,5 +9,6 @@ coverage/
 !.env.example
 .DS_Store
 Thumbs.db
-docs/
+docs/*
+!docs/PROJECT_STATUS.md
 AGENTS.md

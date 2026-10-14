@@ -1,4 +1,5 @@
 import type { ErrorRequestHandler } from 'express';
+import { AppError } from '../shared/app-error.js';
 
 export const errorHandler: ErrorRequestHandler = (
   error: unknown,
@@ -25,6 +26,16 @@ export const errorHandler: ErrorRequestHandler = (
       error: {
         code: 'VALIDATION_ERROR',
         message: 'Request body is too large.',
+      },
+    });
+    return;
+  }
+  if (error instanceof AppError) {
+    res.status(error.status).json({
+      error: {
+        code: error.code,
+        message: error.message,
+        ...(error.details ? { details: error.details } : {}),
       },
     });
     return;
