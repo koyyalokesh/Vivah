@@ -75,7 +75,7 @@ Current limitation:
 
 **Status:** Completed  
 **Completed:** 14 October 2026  
-**Commit:** Pending
+**Commit:** `0ec1253` — `feat: add Vivah authentication foundation`
 
 Delivered:
 
