@@ -107,7 +107,7 @@ Current limitation:
 
 **Status:** Completed
 **Completed:** 15 October 2026
-**Commit:** Not committed yet
+**Commit:** `50fe564` — `feat: add Vivah wedding workspace creation`
 
 Delivered:
 
