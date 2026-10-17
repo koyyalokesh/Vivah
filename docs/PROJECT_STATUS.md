@@ -206,7 +206,7 @@ Current limitation:
 
 **Completed:** 18 October 2026
 
-**Commit:** Pending
+**Commit:** `d243b0f` — `feat: refresh Vivah frontend design system`
 
 Delivered:
 
