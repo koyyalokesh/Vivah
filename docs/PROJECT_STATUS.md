@@ -1,7 +1,7 @@
 # Vivah Project Status
 
-**Last updated:** 17 October 2026
-**Current state:** Wedding details editing completed
+**Last updated:** 18 October 2026
+**Current state:** Wedding Member management completed; Events are next
 **Current branch:** `dev`
 
 ## Purpose
@@ -166,6 +166,40 @@ Current limitation:
 - Wedding cover editing remains deferred until the Cloudflare R2 milestone.
 - A final human-driven mobile pass for the discard dialog and forced session-expiry recovery remains recommended because the dedicated browser automation runtime was unavailable during this milestone.
 
+### 6. Wedding Member management
+
+**Status:** Completed
+
+**Completed:** 18 October 2026
+
+**Commit:** `8c34ccf` — `feat: add wedding member management`
+
+Delivered:
+
+- Wedding-scoped member directory available to Admins and Managers.
+- Admin-only invitation creation, pending-invitation listing and revocation.
+- Seven-day invitation tokens generated with cryptographic randomness and stored only as HMAC-SHA-256 hashes.
+- Public invitation preview plus login and signup return paths that preserve the invitation URL.
+- Atomic invitation acceptance that verifies the signed-in email and prevents an account from joining two weddings.
+- Admin-only role changes and member removal with race-safe final-Admin protection.
+- Immediate member-invitation delivery through an internal email abstraction and timeout-protected Resend adapter.
+- Responsive member-management and invitation-acceptance screens using the existing Vivah design language.
+- Compact authentication and wedding forms, custom destructive-action dialogs, role-aware controls and invitation-page token privacy metadata.
+
+Verified:
+
+- Formatting, ESLint, frontend and backend TypeScript checks and production builds passed.
+- 39 API tests and 12 frontend tests passed, including permission, origin, validation, token secrecy, authentication return-path, duplicate-member and final-Admin cases.
+- Live local smoke checks verified API health, authentication protection, invalid-token handling, and Vite history fallback for the member and invitation routes.
+- Manual browser testing confirmed email delivery, invitation-link opening, authentication return, acceptance, member visibility, Admin-only mutations and customized revocation confirmation.
+- Final review fixes verified that rejected member mutations roll back, successful self-role changes recover from session-refresh failures, and invitation pages suppress referrer leakage and indexing.
+
+Current limitation:
+
+- Each deployed environment must provide server-only `RESEND_API_KEY`, verified `EMAIL_FROM` and unique `MEMBER_INVITATION_HMAC_SECRET` values; no real values are committed.
+- Atomic invitation acceptance and final-Admin protection require MongoDB Atlas or another transaction-capable replica set.
+- A wider physical-device and production-deployment pass remains for the eventual release milestone.
+
 ## Current working capabilities
 
 - Public Vivah marketing homepage.
@@ -177,6 +211,7 @@ Current limitation:
 - Wedding creation with automatic Admin membership.
 - Wedding details editing for Admin and Manager roles.
 - Unsaved wedding-edit draft recovery within the current browser session.
+- Wedding Member listing, secure invitations, acceptance, role changes and removal.
 - Express API health endpoint.
 - Local frontend-to-backend API proxy.
 - Shared repository tooling for development, formatting, linting, type checking, and builds.
@@ -184,23 +219,17 @@ Current limitation:
 ## Not implemented yet
 
 - Password reset.
-- Wedding Member management.
 - Dashboard business data.
 - Events, tasks, guests, invitations, RSVPs, expenses, or vendors.
 - Wedding website publishing or livestream configuration.
 - Cloudflare R2 galleries and photo uploads.
-- Resend email delivery and email jobs.
+- Background and bulk guest email jobs.
 - Google Places vendor discovery.
 - Production deployment configuration.
 
 ## Next recommended milestone
 
-Build Wedding Member management incrementally:
-
-1. Define the Admin-only invitation creation and acceptance contract.
-2. Add wedding-scoped membership reads and Admin permission checks.
-3. Add the first member-management UI without expanding into events or dashboard modules.
-4. Verify last-Admin protection, duplicate invitations and cross-wedding isolation.
+Build wedding Events incrementally, starting with event listing and creation before edit, archive and cover-image work.
 
 This milestone is planned and has not started.
 
