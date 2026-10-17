@@ -138,7 +138,7 @@ Current limitation:
 
 **Completed:** 17 October 2026
 
-**Commit:** Pending - changes are not committed yet
+**Commit:** `4c059da` — `feat: add wedding details editing`
 
 Delivered:
 
