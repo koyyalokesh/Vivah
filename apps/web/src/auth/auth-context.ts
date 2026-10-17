@@ -17,6 +17,8 @@ export type AuthContextValue = {
     membership: WeddingMembership;
     wedding: Wedding;
   }): void;
+  setWedding(wedding: Wedding): void;
+  expireSession(): void;
   signOut(): Promise<void>;
 };
 

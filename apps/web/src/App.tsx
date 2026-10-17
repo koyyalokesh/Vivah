@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import { AuthProvider } from './auth/AuthProvider';
 import { ProtectedRoute } from './auth/ProtectedRoute';
 import { PublicOnlyRoute } from './auth/PublicOnlyRoute';
@@ -7,32 +7,49 @@ import { AppHomePage } from './routes/AppHomePage';
 import { LoginPage } from './routes/LoginPage';
 import { PlaceholderPage } from './routes/PlaceholderPage';
 import { SignupPage } from './routes/SignupPage';
+import { WeddingEditPage } from './routes/WeddingEditPage';
+
+function AppProviders() {
+  return (
+    <AuthProvider>
+      <Outlet />
+    </AuthProvider>
+  );
+}
+
+const router = createBrowserRouter([
+  {
+    element: <AppProviders />,
+    children: [
+      { path: '/', element: <HomePage /> },
+      {
+        element: <PublicOnlyRoute />,
+        children: [
+          { path: '/login', element: <LoginPage /> },
+          { path: '/signup', element: <SignupPage /> },
+        ],
+      },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: '/app', element: <AppHomePage /> },
+          { path: '/app/wedding/edit', element: <WeddingEditPage /> },
+        ],
+      },
+      {
+        path: '*',
+        element: (
+          <PlaceholderPage
+            eyebrow="Page not found"
+            title="This page is not available"
+            description="Return to the Vivah homepage to continue exploring."
+          />
+        ),
+      },
+    ],
+  },
+]);
 
 export default function App() {
-  return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route element={<PublicOnlyRoute />}>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-          </Route>
-          <Route element={<ProtectedRoute />}>
-            <Route path="/app" element={<AppHomePage />} />
-          </Route>
-          <Route
-            path="*"
-            element={
-              <PlaceholderPage
-                eyebrow="Page not found"
-                title="This page is not available"
-                description="Return to the Vivah homepage to continue exploring."
-              />
-            }
-          />
-        </Routes>
-      </AuthProvider>
-    </BrowserRouter>
-  );
+  return <RouterProvider router={router} />;
 }

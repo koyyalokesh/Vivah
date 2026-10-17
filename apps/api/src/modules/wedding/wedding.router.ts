@@ -17,6 +17,7 @@ export function createWeddingRouter(
 
   router.get('/', requireAuth, controller.getCurrent);
   router.post('/', verifyRequestOrigin, requireAuth, controller.create);
+  router.patch('/', verifyRequestOrigin, requireAuth, controller.update);
 
   return router;
 }

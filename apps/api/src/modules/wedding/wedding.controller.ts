@@ -2,7 +2,10 @@ import type { RequestHandler } from 'express';
 import { AppError } from '../../shared/app-error.js';
 import type { AuthLocals } from '../auth/auth.middleware.js';
 import type { WeddingServiceContract } from './wedding.types.js';
-import { createWeddingSchema } from './wedding.validation.js';
+import {
+  createWeddingSchema,
+  updateWeddingSchema,
+} from './wedding.validation.js';
 
 function validationError(error: {
   flatten(): { fieldErrors: Record<string, string[]> };
@@ -59,5 +62,29 @@ export function createWeddingController(service: WeddingServiceContract) {
     }
   };
 
-  return { create, getCurrent };
+  const update: RequestHandler<
+    Record<string, never>,
+    unknown,
+    unknown,
+    unknown,
+    AuthLocals
+  > = async (req, res, next) => {
+    const parsed = updateWeddingSchema.safeParse(req.body);
+    if (!parsed.success) {
+      next(validationError(parsed.error));
+      return;
+    }
+
+    try {
+      const wedding = await service.updateWedding(
+        res.locals.user.id,
+        parsed.data,
+      );
+      res.set('Cache-Control', 'no-store').json({ data: wedding });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  return { create, getCurrent, update };
 }

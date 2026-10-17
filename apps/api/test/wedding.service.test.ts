@@ -6,6 +6,7 @@ import type {
   WeddingMembershipRecord,
   WeddingRecord,
   WeddingRepository,
+  UpdateWeddingInput,
 } from '../src/modules/wedding/wedding.types.js';
 
 const input: CreateWeddingInput = {
@@ -22,6 +23,8 @@ class FakeWeddingRepository implements WeddingRepository {
   wedding: WeddingRecord | null = null;
   failMembership = false;
   deletedWeddingId: string | null = null;
+  updatedWeddingId: string | null = null;
+  updateInput: UpdateWeddingInput | null = null;
 
   async findMembershipByUserId() {
     return this.membership;
@@ -53,6 +56,20 @@ class FakeWeddingRepository implements WeddingRepository {
     if (this.failMembership) throw new Error('membership write failed');
     this.membership = { id: 'membership-1', ...value };
     return this.membership;
+  }
+
+  async updateWeddingById(weddingId: string, value: UpdateWeddingInput) {
+    this.updatedWeddingId = weddingId;
+    this.updateInput = value;
+    if (!this.wedding) return null;
+    this.wedding = {
+      ...this.wedding,
+      ...value,
+      ...(value.title === null ? { title: undefined } : {}),
+      ...(value.description === null ? { description: undefined } : {}),
+      ...(value.location === null ? { location: undefined } : {}),
+    };
+    return this.wedding;
   }
 
   async deleteWeddingById(weddingId: string) {
@@ -103,5 +120,89 @@ describe('WeddingService', () => {
       new WeddingService(repository).createWedding('user-1', input),
     ).rejects.toThrow('membership write failed');
     expect(repository.deletedWeddingId).toBe('wedding-1');
+  });
+
+  it.each(['ADMIN', 'MANAGER'] as const)(
+    'allows a %s to update the wedding derived from membership',
+    async (role) => {
+      const repository = new FakeWeddingRepository();
+      repository.membership = {
+        id: 'membership-1',
+        userId: 'user-1',
+        weddingId: 'wedding-1',
+        role,
+        joinedAt: new Date(),
+      };
+      repository.wedding = {
+        id: 'wedding-1',
+        ...input,
+        description: 'Original description',
+        website: {
+          slug: 'asha-rohan-18022027',
+          theme: 'classic',
+          isPublished: false,
+        },
+        gallery: { isEnabled: false, guestUploadsEnabled: false },
+        livestream: { youtubeUrl: null, isEnabled: false },
+      };
+
+      const result = await new WeddingService(repository).updateWedding(
+        'user-1',
+        { title: 'Updated title', description: null },
+      );
+
+      expect(repository.updatedWeddingId).toBe('wedding-1');
+      expect(repository.updateInput).toEqual({
+        title: 'Updated title',
+        description: null,
+      });
+      expect(result.title).toBe('Updated title');
+      expect(result.description).toBeUndefined();
+      expect(result.website.slug).toBe('asha-rohan-18022027');
+    },
+  );
+
+  it('hides the wedding when the user has no membership', async () => {
+    const repository = new FakeWeddingRepository();
+
+    await expect(
+      new WeddingService(repository).updateWedding('user-1', {
+        title: 'Updated title',
+      }),
+    ).rejects.toMatchObject<Partial<AppError>>({
+      status: 404,
+      code: 'NOT_FOUND',
+    });
+    expect(repository.updatedWeddingId).toBeNull();
+  });
+
+  it('allows clearing the optional wedding title', async () => {
+    const repository = new FakeWeddingRepository();
+    repository.membership = {
+      id: 'membership-1',
+      userId: 'user-1',
+      weddingId: 'wedding-1',
+      role: 'ADMIN',
+      joinedAt: new Date(),
+    };
+    repository.wedding = {
+      id: 'wedding-1',
+      ...input,
+      website: {
+        slug: 'asha-rohan-18022027',
+        theme: 'classic',
+        isPublished: false,
+      },
+      gallery: { isEnabled: false, guestUploadsEnabled: false },
+      livestream: { youtubeUrl: null, isEnabled: false },
+    };
+
+    const result = await new WeddingService(repository).updateWedding(
+      'user-1',
+      { title: null },
+    );
+
+    expect(repository.updateInput).toEqual({ title: null });
+    expect(result.title).toBeUndefined();
   });
 });

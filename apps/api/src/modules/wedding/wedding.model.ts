@@ -17,7 +17,7 @@ const weddingSchema = new mongoose.Schema(
   {
     brideName: { type: String, required: true, trim: true },
     groomName: { type: String, required: true, trim: true },
-    title: { type: String, required: true, trim: true },
+    title: { type: String, trim: true },
     description: { type: String, trim: true },
     weddingDate: { type: String, required: true },
     timeZone: { type: String, required: true },

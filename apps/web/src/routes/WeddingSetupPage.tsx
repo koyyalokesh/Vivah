@@ -81,7 +81,7 @@ export function WeddingSetupPage() {
       const context = await createWedding({
         brideName,
         groomName,
-        title,
+        ...(title.trim() ? { title: title.trim() } : {}),
         weddingDate,
         timeZone,
         ...(location.trim()
@@ -193,7 +193,7 @@ export function WeddingSetupPage() {
               onChange={setTitle}
               error={fieldErrors.title}
               helper="This names your workspace and can be updated later."
-              required
+              optional
             />
             <div className="form-row">
               <SetupField

@@ -8,6 +8,7 @@ import type {
   PublicUser,
 } from '../src/modules/auth/auth.types.js';
 import type {
+  UpdateWeddingInput,
   WeddingContext,
   WeddingServiceContract,
 } from '../src/modules/wedding/wedding.types.js';
@@ -60,6 +61,7 @@ class FakeAuthService implements AuthServiceContract {
 class FakeWeddingService implements WeddingServiceContract {
   receivedUserId: string | null = null;
   current: WeddingContext | null = null;
+  receivedUpdate: { userId: string; input: UpdateWeddingInput } | null = null;
 
   async getContextForUser() {
     return this.current;
@@ -69,6 +71,15 @@ class FakeWeddingService implements WeddingServiceContract {
     this.receivedUserId = userId;
     this.current = context;
     return context;
+  }
+
+  async updateWedding(userId: string, input: UpdateWeddingInput) {
+    this.receivedUpdate = { userId, input };
+    return {
+      ...context.wedding,
+      ...input,
+      ...(input.title === null ? { title: undefined } : {}),
+    };
   }
 }
 
@@ -125,6 +136,21 @@ describe('wedding HTTP API', () => {
     expect(response.body.data.wedding.id).toBe('wedding-1');
   });
 
+  it('allows creating a wedding without an optional title', async () => {
+    const { app } = testApp();
+    const response = await request(app)
+      .post('/api/wedding')
+      .set('Cookie', 'vivah_session=valid-token')
+      .send({
+        brideName: 'Asha',
+        groomName: 'Rohan',
+        weddingDate: '2027-02-18',
+        timeZone: 'Asia/Kolkata',
+      });
+
+    expect(response.status).toBe(201);
+  });
+
   it('validates date and time zone before creating a wedding', async () => {
     const { app } = testApp();
     const response = await request(app)
@@ -155,5 +181,78 @@ describe('wedding HTTP API', () => {
     expect(response.status).toBe(200);
     expect(response.headers['cache-control']).toBe('no-store');
     expect(response.body).toEqual({ data: context.wedding });
+  });
+  it('updates only supplied fields for the session user', async () => {
+    const { app, weddingService } = testApp();
+    const response = await request(app)
+      .patch('/api/wedding')
+      .set('Cookie', 'vivah_session=valid-token')
+      .send({
+        title: 'Asha & Rohan celebrate',
+        description: null,
+        weddingId: 'attacker-controlled-wedding',
+      });
+
+    expect(response.status).toBe(200);
+    expect(response.headers['cache-control']).toBe('no-store');
+    expect(weddingService.receivedUpdate).toEqual({
+      userId: user.id,
+      input: { title: 'Asha & Rohan celebrate', description: null },
+    });
+    expect(response.body.data.website.slug).toBe('asha-rohan-18022027');
+  });
+
+  it('rejects invalid or empty wedding updates', async () => {
+    const { app } = testApp();
+    const invalid = await request(app)
+      .patch('/api/wedding')
+      .set('Cookie', 'vivah_session=valid-token')
+      .send({ brideName: ' ', weddingDate: '2027-02-30' });
+    const empty = await request(app)
+      .patch('/api/wedding')
+      .set('Cookie', 'vivah_session=valid-token')
+      .send({});
+    const emptyLocation = await request(app)
+      .patch('/api/wedding')
+      .set('Cookie', 'vivah_session=valid-token')
+      .send({ location: {} });
+
+    expect(invalid.status).toBe(400);
+    expect(invalid.body.error.details).toMatchObject({
+      brideName: expect.any(Array),
+      weddingDate: expect.any(Array),
+    });
+    expect(empty.status).toBe(400);
+    expect(emptyLocation.status).toBe(400);
+  });
+
+  it('normalizes an empty optional title to null for clearing', async () => {
+    const { app, weddingService } = testApp();
+    const response = await request(app)
+      .patch('/api/wedding')
+      .set('Cookie', 'vivah_session=valid-token')
+      .send({ title: '   ' });
+
+    expect(response.status).toBe(200);
+    expect(weddingService.receivedUpdate).toEqual({
+      userId: user.id,
+      input: { title: null },
+    });
+    expect(response.body.data.title).toBeUndefined();
+  });
+
+  it('requires authentication and a valid request origin for updates', async () => {
+    const { app } = testApp();
+    expect(
+      (await request(app).patch('/api/wedding').send({ title: 'Updated' }))
+        .status,
+    ).toBe(401);
+
+    const crossOrigin = await request(app)
+      .patch('/api/wedding')
+      .set('Cookie', 'vivah_session=valid-token')
+      .set('Origin', 'https://attacker.example')
+      .send({ title: 'Updated' });
+    expect(crossOrigin.status).toBe(403);
   });
 });

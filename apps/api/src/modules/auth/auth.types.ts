@@ -34,7 +34,7 @@ export type CurrentWeddingContext = {
     id: string;
     brideName: string;
     groomName: string;
-    title: string;
+    title?: string;
     description?: string;
     weddingDate: string;
     timeZone: string;

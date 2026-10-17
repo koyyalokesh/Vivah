@@ -2,6 +2,7 @@ import { AppError } from '../../shared/app-error.js';
 import { MongooseWeddingRepository } from './wedding.repository.js';
 import type {
   CreateWeddingInput,
+  UpdateWeddingInput,
   WeddingRepository,
   WeddingServiceContract,
 } from './wedding.types.js';
@@ -92,6 +93,22 @@ export class WeddingService implements WeddingServiceContract {
       }
       throw error;
     }
+  }
+
+  async updateWedding(userId: string, input: UpdateWeddingInput) {
+    const membership = await this.weddings.findMembershipByUserId(userId);
+    if (!membership || !['ADMIN', 'MANAGER'].includes(membership.role)) {
+      throw new AppError(404, 'NOT_FOUND', 'Wedding not found.');
+    }
+
+    const wedding = await this.weddings.updateWeddingById(
+      membership.weddingId,
+      input,
+    );
+    if (!wedding) {
+      throw new AppError(404, 'NOT_FOUND', 'Wedding not found.');
+    }
+    return wedding;
   }
 }
 

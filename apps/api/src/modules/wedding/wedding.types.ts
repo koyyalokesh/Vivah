@@ -14,7 +14,7 @@ export type WeddingRecord = {
   id: string;
   brideName: string;
   groomName: string;
-  title: string;
+  title?: string;
   description?: string;
   weddingDate: string;
   timeZone: string;
@@ -50,11 +50,22 @@ export type WeddingContext = {
 export type CreateWeddingInput = {
   brideName: string;
   groomName: string;
-  title: string;
+  title?: string;
   description?: string;
   weddingDate: string;
   timeZone: string;
   location?: WeddingLocation;
+};
+
+export type UpdateWeddingInput = Partial<
+  Pick<
+    CreateWeddingInput,
+    'brideName' | 'groomName' | 'weddingDate' | 'timeZone'
+  >
+> & {
+  title?: string | null;
+  description?: string | null;
+  location?: WeddingLocation | null;
 };
 
 export interface WeddingRepository {
@@ -68,6 +79,10 @@ export interface WeddingRepository {
       slug: string;
     },
   ): Promise<WeddingRecord>;
+  updateWeddingById(
+    weddingId: string,
+    input: UpdateWeddingInput,
+  ): Promise<WeddingRecord | null>;
   createMembership(input: {
     userId: string;
     weddingId: string;
@@ -83,4 +98,8 @@ export interface WeddingServiceContract {
     userId: string,
     input: CreateWeddingInput,
   ): Promise<WeddingContext>;
+  updateWedding(
+    userId: string,
+    input: UpdateWeddingInput,
+  ): Promise<WeddingRecord>;
 }

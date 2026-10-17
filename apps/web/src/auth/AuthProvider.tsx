@@ -56,6 +56,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           current ? { ...current, ...context } : current,
         );
       },
+      setWedding: (wedding: NonNullable<AuthSession['wedding']>) => {
+        setSession((current) => (current ? { ...current, wedding } : current));
+      },
+      expireSession: () => {
+        setSignedOutFromLocationKey(null);
+        setSession(null);
+      },
       signOut: async () => {
         try {
           await logout();

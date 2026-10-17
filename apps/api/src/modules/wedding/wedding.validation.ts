@@ -32,7 +32,7 @@ const optionalText = (maximum: number) =>
 export const createWeddingSchema = z.object({
   brideName: z.string().trim().min(1, 'Enter partner one’s name.').max(100),
   groomName: z.string().trim().min(1, 'Enter partner two’s name.').max(100),
-  title: z.string().trim().min(1, 'Enter a wedding title.').max(150),
+  title: optionalText(150),
   description: optionalText(500),
   weddingDate: z.string().refine(isCalendarDate, 'Enter a valid wedding date.'),
   timeZone: z.string().trim().refine(isTimeZone, 'Select a valid time zone.'),
@@ -54,3 +54,53 @@ export const createWeddingSchema = z.object({
         : undefined;
     }),
 });
+
+const requiredName = (message: string) =>
+  z.string().trim().min(1, message).max(100);
+
+export const updateWeddingSchema = z
+  .object({
+    brideName: requiredName('Enter the bride\u2019s name.').optional(),
+    groomName: requiredName('Enter the groom\u2019s name.').optional(),
+    title: z
+      .union([z.string().trim().max(150), z.null()])
+      .optional()
+      .transform((value) => (value === '' ? null : value)),
+    description: z
+      .union([z.string().trim().max(500), z.null()])
+      .optional()
+      .transform((value) => (value === '' ? null : value)),
+    weddingDate: z
+      .string()
+      .refine(isCalendarDate, 'Enter a valid wedding date.')
+      .optional(),
+    timeZone: z
+      .string()
+      .trim()
+      .refine(isTimeZone, 'Select a valid time zone.')
+      .optional(),
+    location: z
+      .union([
+        z
+          .object({
+            formattedAddress: optionalText(250),
+            city: optionalText(100),
+            state: optionalText(100),
+            country: optionalText(100),
+            latitude: z.number().min(-90).max(90).optional(),
+            longitude: z.number().min(-180).max(180).optional(),
+            googlePlaceId: optionalText(250),
+          })
+          .refine(
+            (location) =>
+              Object.values(location).some((value) => value !== undefined),
+            'Provide a location value or use null to clear it.',
+          ),
+        z.null(),
+      ])
+      .optional(),
+  })
+  .refine((value) => Object.keys(value).length > 0, {
+    message: 'Provide at least one wedding detail to update.',
+    path: ['title'],
+  });

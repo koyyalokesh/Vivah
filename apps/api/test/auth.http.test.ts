@@ -57,6 +57,9 @@ const noWeddingService: WeddingServiceContract = {
   async createWedding() {
     throw new Error('Not used in authentication tests.');
   },
+  async updateWedding() {
+    throw new Error('Not used in authentication tests.');
+  },
 };
 
 function testApp(
@@ -150,6 +153,9 @@ describe('authentication HTTP API', () => {
         throw new Error('context unavailable');
       },
       async createWedding() {
+        throw new Error('Not used in authentication tests.');
+      },
+      async updateWedding() {
         throw new Error('Not used in authentication tests.');
       },
     };

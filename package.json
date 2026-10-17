@@ -14,7 +14,7 @@
     "dev:api": "npm run dev --workspace=@vivah/api",
     "build": "npm run build --workspaces",
     "typecheck": "npm run typecheck --workspaces",
-    "test": "npm run test --workspace=@vivah/api",
+    "test": "npm run test --workspaces --if-present",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."

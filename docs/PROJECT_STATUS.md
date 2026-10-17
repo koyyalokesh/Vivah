@@ -1,7 +1,7 @@
 # Vivah Project Status
 
-**Last updated:** 15 October 2026
-**Current state:** Wedding workspace creation completed
+**Last updated:** 17 October 2026
+**Current state:** Wedding details editing completed
 **Current branch:** `dev`
 
 ## Purpose
@@ -131,7 +131,40 @@ Current limitation:
 - The post-creation workspace remains a simple welcome state; dashboard business modules are not implemented.
 - Gallery token creation is deferred until the gallery milestone because stable raw-token recovery is unresolved in the database design.
 - Wedding cover upload is deferred until the Cloudflare R2 milestone.
-- A fresh manual browser QA pass for the final wedding form and responsive states is still pending.
+
+### 5. Wedding details editing
+
+**Status:** Completed
+
+**Completed:** 17 October 2026
+
+**Commit:** Pending - changes are not committed yet
+
+Delivered:
+
+- Authenticated `PATCH /api/wedding` endpoint for Admin and Manager roles.
+- Wedding ownership is derived from the authenticated membership; client-supplied wedding IDs are ignored.
+- Partial updates preserve omitted fields, while `null` clears the optional description or location.
+- Wedding names, optional title, date, time zone, location and description are validated before persistence.
+- The optional wedding title can be cleared; the workspace overview then falls back to the couple names.
+- The existing public wedding slug remains stable when names or the wedding date change.
+- Responsive wedding-details editor at `/app/wedding/edit`, based on the approved desktop and mobile Stitch designs.
+- Prefilled values, changed-field updates, save/cancel actions, inline validation, success and failure feedback, and unsaved-change warnings.
+- Session-scoped draft persistence keyed by user and wedding, with baseline-aware recovery that preserves unrelated newer server updates and reports same-field conflicts, plus a login recovery path when a save discovers that the session has expired.
+- Updated wedding context after saving so the overview immediately shows the latest title.
+
+Verified:
+
+- Formatting, ESLint, frontend and backend TypeScript checks, production builds, 30 API/service tests and 4 frontend draft-recovery tests passed.
+- Tests cover authenticated updates, Admin and Manager permissions, membership-derived wedding scope, invalid and empty payloads, optional clearing, request-origin protection and stable slugs.
+- An isolated local MongoDB run through the Vite `/api` proxy verified signup, wedding creation, update, refresh, optional-field clearing, stable slug behavior, invalid-date rejection and cross-origin rejection.
+- Local Chrome verified the prefilled edit screen and live save flow; the desktop implementation was visually compared with the approved Stitch screen.
+- Isolated headless Chrome QA verified generated-title updates, custom-title preservation, optional-title clearing, save completion, browser Back protection, preserved dirty values and the authenticated homepage navigation.
+
+Current limitation:
+
+- Wedding cover editing remains deferred until the Cloudflare R2 milestone.
+- A final human-driven mobile pass for the discard dialog and forced session-expiry recovery remains recommended because the dedicated browser automation runtime was unavailable during this milestone.
 
 ## Current working capabilities
 
@@ -142,6 +175,8 @@ Current limitation:
 - MongoDB-backed Wedding and WeddingMembership persistence.
 - Protected `/app` route with wedding setup and restored wedding context.
 - Wedding creation with automatic Admin membership.
+- Wedding details editing for Admin and Manager roles.
+- Unsaved wedding-edit draft recovery within the current browser session.
 - Express API health endpoint.
 - Local frontend-to-backend API proxy.
 - Shared repository tooling for development, formatting, linting, type checking, and builds.

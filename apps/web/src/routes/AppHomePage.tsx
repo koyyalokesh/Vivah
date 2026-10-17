@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
 import { WeddingSetupPage } from './WeddingSetupPage';
 
@@ -49,8 +50,16 @@ export function AppHomePage() {
         </p>
         <div className="account-detail">
           <span>Your wedding</span>
-          <strong>{wedding.title}</strong>
+          <strong>
+            {wedding.title || `${wedding.brideName} & ${wedding.groomName}`}
+          </strong>
         </div>
+        <Link
+          className="button button-primary app-edit-link"
+          to="/app/wedding/edit"
+        >
+          Edit wedding details
+        </Link>
         {error ? (
           <div className="form-alert" role="alert">
             {error}

@@ -18,6 +18,11 @@ export function LoginPage() {
     Partial<Record<Fields, string>>
   >({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const sessionExpired =
+    typeof location.state === 'object' &&
+    location.state &&
+    'sessionExpired' in location.state &&
+    location.state.sessionExpired === true;
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -59,6 +64,12 @@ export function LoginPage() {
         <p>Continue planning with your family in one private workspace.</p>
       </div>
       <form className="auth-form" onSubmit={handleSubmit} noValidate>
+        {sessionExpired ? (
+          <div className="form-notice" role="status">
+            Your session expired. Log in again to return to your preserved
+            wedding-details draft.
+          </div>
+        ) : null}
         {error ? (
           <div className="form-alert" role="alert">
             {error}

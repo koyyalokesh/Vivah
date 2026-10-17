@@ -1,6 +1,6 @@
 # Vivah
 
-Vivah is a wedding planning application. It uses React + TypeScript + Vite and a Node.js + Express + TypeScript API in one npm-workspaces repository. The current application includes the public homepage, authentication, and wedding workspace creation.
+Vivah is a wedding planning application. It uses React + TypeScript + Vite and a Node.js + Express + TypeScript API in one npm-workspaces repository. The current application includes the public homepage, authentication, wedding workspace creation, and wedding-details editing.
 
 ## Local setup
 
@@ -21,6 +21,7 @@ Available application routes:
 - `/signup`: account creation.
 - `/login`: account login.
 - `/app`: authenticated wedding setup for users without a wedding, followed by the initial workspace screen.
+- `/app/wedding/edit`: authenticated Admin and Manager form for updating the current wedding's details.
 
 Run independently in two terminals:
 
@@ -37,7 +38,7 @@ npm run dev:api
 | `npm run dev:web`      | Start frontend                     |
 | `npm run dev:api`      | Start API                          |
 | `npm run typecheck`    | Check both TypeScript projects     |
-| `npm test`             | Run API and service tests          |
+| `npm test`             | Run frontend and API tests         |
 | `npm run lint`         | Check code with ESLint             |
 | `npm run format:check` | Check formatting                   |
 | `npm run format`       | Format scaffold; docs are excluded |
@@ -50,7 +51,7 @@ Invoke-RestMethod http://localhost:3001/api/health
 Invoke-RestMethod http://localhost:5173/api/health
 ```
 
-Both return `{ "data": { "status": "ok" } }`. These commands verify API liveness and the frontend development proxy. The API also exposes signup, login, logout and current-user routes under `/api/auth`, plus authenticated `GET /api/wedding` and `POST /api/wedding` routes. Unknown API routes return JSON 404; malformed JSON returns 400; oversized JSON returns 413; unexpected errors return generic 500 without stack traces. Ports are fixed; if changing the API port, update the proxy target too.
+Both return `{ "data": { "status": "ok" } }`. These commands verify API liveness and the frontend development proxy. The API also exposes signup, login, logout and current-user routes under `/api/auth`, plus authenticated `GET /api/wedding`, `POST /api/wedding`, and `PATCH /api/wedding` routes. Unknown API routes return JSON 404; malformed JSON returns 400; oversized JSON returns 413; unexpected errors return generic 500 without stack traces. Ports are fixed; if changing the API port, update the proxy target too.
 
 ## Structure and boundaries
 
@@ -58,7 +59,7 @@ Both return `{ "data": { "status": "ok" } }`. These commands verify API liveness
 - `apps/api/src/app.ts`: creates and default-exports Express; importing it does not open a port.
 - `apps/api/src/server.ts`: local listener using validated configuration.
 - `apps/api/src/modules/auth`: authentication routes, controller, service, repositories, validation and Mongoose models.
-- `apps/api/src/modules/wedding`: wedding creation, membership, validation and wedding-scoped persistence.
+- `apps/api/src/modules/wedding`: wedding creation and editing, membership, validation and wedding-scoped persistence.
 - `apps/web/src/auth`: browser session state and protected-route handling.
 - `docs/PRD.md`, `docs/SYSTEM_ARCHITECTURE.md`, `docs/DATABASE_DESIGN.md`, `docs/API_DESIGN.md`: existing design baseline, preserved.
 - `docs/PROJECT_STATUS.md`: living record of completed implementation milestones and the next planned step.
@@ -77,6 +78,6 @@ The intended hosting uses separate Vercel web and API projects. Vercel can impor
 
 ## Scope and next task
 
-The public marketing homepage, authentication foundation, and wedding workspace creation are implemented. The dashboard shown on the homepage is an illustrative preview rather than a working application feature. MongoDB currently stores users, sessions, shared authentication rate-limit counters, weddings and wedding memberships. Password reset, member invitations, dashboard business modules, R2, email, Places and jobs are not implemented. Existing historical implementation notes are not proof of implemented features here.
+The public marketing homepage, authentication foundation, wedding workspace creation, and wedding-details editing are implemented. The dashboard shown on the homepage is an illustrative preview rather than a working application feature. MongoDB currently stores users, sessions, shared authentication rate-limit counters, weddings and wedding memberships. Password reset, member invitations, dashboard business modules, R2, email, Places and jobs are not implemented. Existing historical implementation notes are not proof of implemented features here.
 
 Next: implement Wedding Member management, starting with Admin-only invitation and membership controls. Gallery tokens remain deferred until the gallery milestone because the approved database document leaves stable raw-token recovery unresolved. RSVP scope, media verification, email throughput, and public sharing remain decisions for their respective milestones.
