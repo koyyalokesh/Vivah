@@ -10,6 +10,36 @@
     />
     <meta name="theme-color" content="#f7f6f2" />
     <title>Vivah — Your wedding, beautifully organized</title>
+    <script>
+      (() => {
+        try {
+          const storedPreference = localStorage.getItem('vivah-theme');
+          const preference = ['light', 'dark', 'system'].includes(
+            storedPreference,
+          )
+            ? storedPreference
+            : 'system';
+          const resolved =
+            preference === 'system'
+              ? matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
+              : preference === 'dark'
+                ? 'dark'
+                : 'light';
+          document.documentElement.dataset.theme = resolved;
+          document.documentElement.style.colorScheme = resolved;
+          document
+            .querySelector('meta[name="theme-color"]')
+            ?.setAttribute(
+              'content',
+              resolved === 'dark' ? '#101A29' : '#F7F6F2',
+            );
+        } catch {
+          document.documentElement.dataset.theme = 'light';
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>

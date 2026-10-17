@@ -15,6 +15,7 @@ import {
 import { ApiError, type Wedding, type WeddingMembership } from '../api/auth';
 import { updateWedding, type UpdateWeddingInput } from '../api/wedding';
 import { useAuth } from '../auth/useAuth';
+import { ThemeSelector } from '../components/ui/ThemeSelector';
 import {
   recoverWeddingEditDraft,
   type WeddingEditDraft,
@@ -410,6 +411,7 @@ function WeddingEditForm({
           <small>Wedding overview</small>
         </button>
         <div className="edit-account">
+          <ThemeSelector compact />
           <div className="edit-account-copy">
             <strong>{user?.name}</strong>
             <span>{user?.email}</span>

@@ -14,6 +14,7 @@ import {
   type WeddingMember,
 } from '../api/members';
 import { useAuth } from '../auth/useAuth';
+import { ThemeSelector } from '../components/ui/ThemeSelector';
 
 type PendingConfirmation =
   | { type: 'REMOVE_MEMBER'; member: WeddingMember }
@@ -208,7 +209,10 @@ export function MembersPage() {
           <span className="wordmark">Vivah</span>
           <small>Wedding overview</small>
         </Link>
-        <span>{user?.name}</span>
+        <div className="members-header-actions">
+          <ThemeSelector compact />
+          <span>{user?.name}</span>
+        </div>
       </header>
       <div className="members-shell">
         <div className="members-heading">

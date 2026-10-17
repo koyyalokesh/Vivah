@@ -2,6 +2,7 @@ import { useMemo, useState, type FormEvent } from 'react';
 import { ApiError } from '../api/auth';
 import { createWedding } from '../api/wedding';
 import { useAuth } from '../auth/useAuth';
+import { ThemeSelector } from '../components/ui/ThemeSelector';
 
 type Field =
   | 'brideName'
@@ -131,6 +132,7 @@ export function WeddingSetupPage() {
           <span>Vivah</span>
         </div>
         <div className="setup-account">
+          <ThemeSelector compact />
           <span className="account-avatar" aria-hidden="true">
             {initials(user?.name ?? 'Vivah user')}
           </span>

@@ -114,7 +114,7 @@ export function HomePage() {
               <span aria-hidden="true" /> Made for Indian weddings
             </span>
             <h1>
-              Plan every celebration,<em> together.</em>
+              Your wedding,<em> beautifully organized.</em>
             </h1>
             <p>
               One calm workspace for events, tasks, guests, expenses, vendors,

@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../auth/useAuth';
+import { ThemeSelector } from '../ui/ThemeSelector';
 
 export function Header() {
   const { isLoading, user } = useAuth();
@@ -22,6 +23,7 @@ export function Header() {
         </nav>
 
         <div className="header-actions">
+          <ThemeSelector compact />
           {isLoading ? (
             <span className="header-auth-placeholder" aria-hidden="true" />
           ) : user ? (

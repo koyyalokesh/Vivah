@@ -1,9 +1,13 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
+import { ThemeSelector } from '../ui/ThemeSelector';
 
 export function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <main className="auth-page">
+      <div className="auth-theme-control">
+        <ThemeSelector />
+      </div>
       <Link
         className="wordmark auth-wordmark"
         to="/"

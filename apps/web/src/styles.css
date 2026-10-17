@@ -1,18 +1,61 @@
-:root {
+﻿:root {
   font-family: 'Inter', system-ui, sans-serif;
-  color: #202a2c;
+  color: #202a35;
   background: #f7f6f2;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  --ink: #202a2c;
-  --muted: #596563;
-  --teal: #24504c;
-  --teal-dark: #073935;
-  --teal-pale: #e9f2ef;
+  --background: #f7f6f2;
+  --surface: #ffffff;
+  --surface-muted: #f0f2f1;
+  --surface-elevated: #ffffff;
+  --sidebar: #14283f;
+  --text: #202a35;
+  --text-secondary: #647180;
+  --border: #e1e6ea;
+  --primary: #28435d;
+  --primary-hover: #1c324b;
+  --on-primary: #ffffff;
+  --sage: #617c6f;
+  --champagne: #c9b68c;
+  --focus: #6f9abe;
+  --danger: #a83f3f;
+  --danger-surface: #fff4f3;
+  --warning-text: #625746;
+  --warning-surface: #f3eadc;
+  --shadow: 32 42 53;
+  --ink: var(--text);
+  --muted: var(--text-secondary);
+  --teal: var(--primary);
+  --teal-dark: var(--primary-hover);
+  --teal-pale: #e8eeec;
   --ivory: #f7f6f2;
-  --paper: #fff;
-  --stone: #b9ad99;
-  --line: #e1e4df;
+  --paper: var(--surface);
+  --stone: var(--champagne);
+  --line: var(--border);
+}
+
+:root[data-theme='dark'] {
+  --background: #101a29;
+  --surface: #1c2b3d;
+  --surface-muted: #172538;
+  --surface-elevated: #26394e;
+  --sidebar: #0c1522;
+  --text: #f2f5f8;
+  --text-secondary: #bdc9d5;
+  --border: #34465c;
+  --primary: #8fb9de;
+  --primary-hover: #a8c9e6;
+  --on-primary: #102235;
+  --sage: #a4c7b3;
+  --champagne: #d8c59d;
+  --focus: #8fb9de;
+  --danger: #ffb4ab;
+  --danger-surface: #402024;
+  --warning-text: #f0dab0;
+  --warning-surface: #3b352e;
+  --shadow: 0 0 0;
+  --teal-pale: #263d45;
+  --ivory: var(--background);
 }
 
 .members-page,
@@ -543,7 +586,7 @@ summary:focus-visible {
   font-size: 0.76rem;
 }
 .hero-trust span::before {
-  content: '✓';
+  content: 'âœ“';
   margin-right: 7px;
   color: var(--teal);
   font-weight: 700;
@@ -1509,10 +1552,10 @@ summary:focus-visible {
   box-shadow: 0 0 0 3px rgb(36 80 76 / 12%);
 }
 .form-field input[aria-invalid='true'] {
-  border-color: #a83f3f;
+  border-color: var(--danger);
 }
 .field-error {
-  color: #8c3030;
+  color: var(--danger);
   font-size: 0.72rem;
 }
 .form-alert {
@@ -1579,13 +1622,18 @@ summary:focus-visible {
   align-items: center;
   margin: 0 auto;
 }
+.app-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .app-welcome-card {
   width: min(620px, 100%);
   margin: auto;
   padding: 38px;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: white;
+  background: var(--surface);
   text-align: center;
   box-shadow: 0 20px 60px rgb(32 42 44 / 10%);
 }
@@ -1629,7 +1677,7 @@ summary:focus-visible {
   letter-spacing: 0.08em;
 }
 .account-detail strong {
-  color: var(--teal-dark);
+  color: var(--text);
   font-size: 0.86rem;
 }
 .app-welcome-card .form-alert {
@@ -1657,8 +1705,8 @@ summary:focus-visible {
     transform 160ms ease;
 }
 .app-action-card:hover {
-  border-color: #b9cbc5;
-  background: #f7faf8;
+  border-color: var(--sage);
+  background: var(--surface-muted);
   transform: translateY(-1px);
 }
 .app-action-card > span:nth-child(2) {
@@ -1680,7 +1728,7 @@ summary:focus-visible {
   place-items: center;
   border-radius: 8px;
   background: var(--teal-pale);
-  color: var(--teal-dark);
+  color: var(--text);
   font-weight: 750;
 }
 
@@ -1826,8 +1874,8 @@ summary:focus-visible {
   font-weight: 650;
 }
 .save-state-dirty {
-  background: rgb(185 173 153 / 20%);
-  color: #625746;
+  background: var(--warning-surface);
+  color: var(--warning-text);
 }
 .draft-notice {
   margin: 0 0 15px;
@@ -2131,7 +2179,7 @@ summary:focus-visible {
 .setup-field input[aria-invalid='true'],
 .setup-field select[aria-invalid='true'],
 .setup-field textarea[aria-invalid='true'] {
-  border-color: #a83f3f;
+  border-color: var(--danger);
 }
 .field-help {
   color: var(--muted);
@@ -2690,5 +2738,378 @@ summary:focus-visible {
   }
   .auth-spinner {
     animation: none;
+  }
+}
+
+/* Stitch redesign foundation */
+body {
+  background: var(--background);
+  color: var(--text);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--primary) 24%, transparent);
+}
+
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.button-primary {
+  background: var(--primary);
+  color: var(--on-primary);
+  box-shadow: 0 10px 26px rgb(var(--shadow) / 16%);
+}
+.button-primary:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 14px 30px rgb(var(--shadow) / 20%);
+}
+.button-secondary {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  color: var(--text);
+}
+.button-secondary:hover {
+  background: var(--surface-elevated);
+}
+.button-inverse {
+  background: #f2f5f8;
+  color: #14283f;
+}
+.wordmark {
+  color: var(--text);
+}
+.wordmark-mark {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+
+.theme-selector {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface-muted);
+}
+.theme-selector button {
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: var(--text-secondary);
+  font-size: 0.68rem;
+  font-weight: 650;
+}
+.theme-selector button:hover {
+  color: var(--text);
+}
+.theme-selector button.is-selected {
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: 0 1px 5px rgb(var(--shadow) / 12%);
+}
+.theme-selector svg {
+  width: 15px;
+  height: 15px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.7;
+}
+.theme-selector-compact button {
+  width: 30px;
+  min-height: 30px;
+  padding: 0;
+}
+
+.site-header,
+.setup-header,
+.edit-header,
+.members-header {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--background) 92%, transparent);
+}
+.header-actions {
+  gap: 12px;
+}
+.hero {
+  background:
+    radial-gradient(circle at 50% -20%, var(--surface) 0, transparent 52%),
+    var(--background);
+}
+.hero-eyebrow {
+  border-color: var(--border);
+  background: color-mix(in srgb, var(--surface) 75%, transparent);
+}
+.hero h1 em,
+.hero-eyebrow,
+.section-eyebrow,
+.mini-label {
+  color: var(--sage);
+}
+.hero-trust {
+  color: var(--text-secondary);
+}
+.preview-action,
+.couple-avatar,
+.phone-button,
+.steps-grid article > span {
+  color: var(--on-primary);
+}
+.dashboard-frame,
+.stat-grid article,
+.dashboard-panels > article,
+.problem-grid article,
+.faq-list details,
+.phone,
+.placeholder-card {
+  border-color: var(--border);
+  background: var(--surface);
+}
+.dashboard-toolbar,
+.dashboard-sidebar,
+.phone-stage,
+.problem-section,
+.faq-section,
+.site-footer {
+  background: var(--surface-muted);
+}
+.dashboard-content {
+  background: var(--background);
+}
+.dashboard-sidebar li.active {
+  background: var(--surface);
+  color: var(--primary);
+}
+.guest-section {
+  background: var(--surface);
+}
+.feature-section,
+.final-cta {
+  background: var(--sidebar);
+}
+.privacy-card {
+  background: var(--primary);
+  color: var(--on-primary);
+}
+.steps-section,
+.privacy-section {
+  background: var(--background);
+}
+.footer-bottom,
+.event-row,
+.members-card-heading,
+.member-row {
+  border-color: var(--border);
+}
+
+/* Authentication */
+.auth-page {
+  position: relative;
+  background:
+    radial-gradient(
+      circle at 12% 10%,
+      color-mix(in srgb, var(--surface) 75%, transparent),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 88% 82%,
+      color-mix(in srgb, var(--sage) 13%, transparent),
+      transparent 33%
+    ),
+    var(--background);
+}
+.auth-theme-control,
+.invitation-theme-control {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+}
+.auth-panel {
+  border-color: var(--border);
+  background: var(--surface);
+  box-shadow: 0 18px 55px rgb(var(--shadow) / 10%);
+}
+.field-input-wrap {
+  position: relative;
+}
+.form-field input,
+.setup-field input,
+.setup-field select,
+.setup-field textarea,
+.member-invite-form input,
+.member-invite-form select {
+  border-color: var(--border);
+  background: var(--surface);
+  color: var(--text);
+}
+.form-field input:focus,
+.setup-field input:focus,
+.setup-field select:focus,
+.setup-field textarea:focus,
+.member-invite-form input:focus,
+.member-invite-form select:focus {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--focus) 20%, transparent);
+}
+.field-input-wrap input[type='password'],
+.field-input-wrap input[type='text'] {
+  padding-right: 43px;
+}
+.password-visibility {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  transform: translateY(-50%);
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--text-secondary);
+}
+.password-visibility:hover {
+  background: var(--surface-muted);
+  color: var(--text);
+}
+.password-visibility svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentcolor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.6;
+}
+.form-alert {
+  border-color: color-mix(in srgb, var(--danger) 35%, var(--border));
+  background: var(--danger-surface);
+  color: var(--danger);
+}
+.form-notice,
+.form-success,
+.draft-notice {
+  border-color: color-mix(in srgb, var(--sage) 32%, var(--border));
+  background: color-mix(in srgb, var(--sage) 11%, var(--surface));
+  color: var(--text);
+}
+
+/* Existing wedding and member screens */
+.wedding-setup-page,
+.wedding-edit-page,
+.members-page,
+.invitation-page,
+.placeholder-page {
+  background: var(--background);
+  color: var(--text);
+}
+.setup-card,
+.edit-card,
+.members-card,
+.invitation-card,
+.leave-dialog,
+.confirmation-dialog,
+.wedding-form,
+.edit-form {
+  border-color: var(--border);
+  background: var(--surface);
+  box-shadow: 0 16px 44px rgb(var(--shadow) / 9%);
+}
+.setup-aside,
+.edit-aside,
+.member-invite-form,
+.member-empty {
+  border-color: var(--border);
+  background: var(--surface-muted);
+}
+.role-badge.role-badge-admin {
+  border-color: color-mix(in srgb, var(--sage) 45%, var(--border));
+  background: color-mix(in srgb, var(--sage) 16%, var(--surface));
+  color: var(--sage);
+}
+.role-badge.role-badge-manager {
+  border-color: color-mix(in srgb, var(--champagne) 50%, var(--border));
+  background: color-mix(in srgb, var(--champagne) 15%, var(--surface));
+  color: var(--text);
+}
+.members-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+.invitation-page {
+  position: relative;
+}
+
+:root[data-theme='dark'] .phone,
+:root[data-theme='dark'] .dashboard-frame {
+  box-shadow: 0 24px 55px rgb(0 0 0 / 28%);
+}
+:root[data-theme='dark'] .feature-section,
+:root[data-theme='dark'] .final-cta {
+  color: #f2f5f8;
+}
+:root[data-theme='dark'] .privacy-card {
+  background: var(--surface-elevated);
+  color: #f2f5f8;
+}
+:root[data-theme='dark'] .phone-stage {
+  background: radial-gradient(circle at 50% 40%, #26394e, #172538 55%, #101a29);
+}
+
+@media (max-width: 680px) {
+  .auth-theme-control,
+  .invitation-theme-control {
+    top: 12px;
+    right: 12px;
+  }
+  .auth-theme-control .theme-selector,
+  .invitation-theme-control .theme-selector {
+    gap: 2px;
+  }
+  .auth-theme-control .theme-selector button,
+  .invitation-theme-control .theme-selector button {
+    width: 30px;
+    padding: 0;
+  }
+  .auth-theme-control .theme-selector span,
+  .invitation-theme-control .theme-selector span {
+    display: none;
+  }
+  .members-header-actions > span {
+    display: none;
+  }
+  .edit-form,
+  .wedding-form {
+    background: var(--surface);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
   }
 }

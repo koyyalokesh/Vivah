@@ -10,12 +10,15 @@ import { SignupPage } from './routes/SignupPage';
 import { WeddingEditPage } from './routes/WeddingEditPage';
 import { MembersPage } from './routes/MembersPage';
 import { MemberInvitationPage } from './routes/MemberInvitationPage';
+import { ThemeProvider } from './theme/ThemeProvider';
 
 function AppProviders() {
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

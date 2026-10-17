@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth';
+import { ThemeSelector } from '../components/ui/ThemeSelector';
 import { WeddingSetupPage } from './WeddingSetupPage';
 
 export function AppHomePage() {
@@ -30,23 +31,26 @@ export function AppHomePage() {
           </span>
           <span>Vivah</span>
         </div>
-        <button
-          className="button button-secondary button-small"
-          onClick={handleLogout}
-          disabled={isSigningOut}
-        >
-          {isSigningOut ? 'Logging out…' : 'Log out'}
-        </button>
+        <div className="app-header-actions">
+          <ThemeSelector compact />
+          <button
+            className="button button-secondary button-small"
+            onClick={handleLogout}
+            disabled={isSigningOut}
+          >
+            {isSigningOut ? 'Logging out…' : 'Log out'}
+          </button>
+        </div>
       </header>
       <section className="app-welcome-card">
         <span className="account-ready-mark" aria-hidden="true">
           ✓
         </span>
-        <span className="section-eyebrow">Account ready</span>
+        <span className="section-eyebrow">Wedding workspace</span>
         <h1>Welcome to Vivah, {user?.name}.</h1>
         <p>
-          Your wedding workspace is ready. Continue planning one feature at a
-          time.
+          Your wedding workspace is ready. Use the available tools below while
+          we build the remaining planning features one at a time.
         </p>
         <div className="account-detail">
           <span>Your wedding</span>

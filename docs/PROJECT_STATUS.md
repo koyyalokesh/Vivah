@@ -1,7 +1,7 @@
 # Vivah Project Status
 
 **Last updated:** 18 October 2026
-**Current state:** Wedding Member management completed; Events are next
+**Current state:** Frontend visual redesign completed; Events are next
 **Current branch:** `dev`
 
 ## Purpose
@@ -200,6 +200,37 @@ Current limitation:
 - Atomic invitation acceptance and final-Admin protection require MongoDB Atlas or another transaction-capable replica set.
 - A wider physical-device and production-deployment pass remains for the eventual release milestone.
 
+### 7. Frontend Stitch redesign and theming
+
+**Status:** Completed
+
+**Completed:** 18 October 2026
+
+**Commit:** Pending
+
+Delivered:
+
+- Semantic Light and Deep Navy Dark color tokens shared across the existing frontend.
+- Accessible Light, Dark and System appearance selector with local persistence, live operating-system preference updates and pre-render theme initialization.
+- Latest Stitch visual treatment for the marketing homepage, centered login experience, wedding onboarding and wedding-details editor.
+- A compact authenticated workspace landing page that links only to implemented wedding-details and member-management features.
+- Shared password visibility and theme-selector controls, plus consistent theming for signup, member management and invitation acceptance.
+- Responsive and reduced-motion styles without adding a UI or state-management dependency.
+
+Verified:
+
+- Formatting, ESLint, frontend and backend TypeScript checks and production builds passed.
+- 39 API tests and 15 frontend tests passed, including focused theme preference and resolution tests.
+- Public homepage, login and signup routes returned successfully; API health worked through the Vite proxy.
+- Headless Chrome renders verified the homepage in Light and Dark modes and the centered login screen at desktop size.
+
+Current limitation:
+
+- The latest Stitch project has no dedicated signup or Wedding Member management reference, so those screens use the shared approved Vivah design system rather than a screen-specific replica.
+- The wedding dashboard remains deferred until its business modules and data are implemented.
+- Password reset remains unimplemented, so no nonfunctional forgot-password route was added during the visual redesign.
+- Final hands-on checks at 390px on a physical or interactive browser remain recommended because the browser automation runtime was unavailable.
+
 ## Current working capabilities
 
 - Public Vivah marketing homepage.
@@ -212,6 +243,8 @@ Current limitation:
 - Wedding details editing for Admin and Manager roles.
 - Unsaved wedding-edit draft recovery within the current browser session.
 - Wedding Member listing, secure invitations, acceptance, role changes and removal.
+- Consistent Light, Dark and System appearance across existing screens.
+- Authenticated workspace landing page for implemented wedding and member tools.
 - Express API health endpoint.
 - Local frontend-to-backend API proxy.
 - Shared repository tooling for development, formatting, linting, type checking, and builds.

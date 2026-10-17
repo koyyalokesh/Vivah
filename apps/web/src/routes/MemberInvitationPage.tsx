@@ -7,6 +7,7 @@ import {
   type PublicMemberInvitation,
 } from '../api/members';
 import { useAuth } from '../auth/useAuth';
+import { ThemeSelector } from '../components/ui/ThemeSelector';
 
 export function MemberInvitationPage() {
   const { token = '' } = useParams();
@@ -93,6 +94,9 @@ export function MemberInvitationPage() {
 
   return (
     <main className="invitation-page">
+      <div className="invitation-theme-control">
+        <ThemeSelector />
+      </div>
       <section className="invitation-card">
         <div className="wordmark">Vivah</div>
         {loading ? (
