@@ -9,18 +9,23 @@ import { errorHandler } from './middleware/error-handler.js';
 import { createWeddingRouter } from './modules/wedding/wedding.router.js';
 import { weddingService } from './modules/wedding/wedding.service.js';
 import type { WeddingServiceContract } from './modules/wedding/wedding.types.js';
+import { createMembersRouter } from './modules/members/members.router.js';
+import { memberService } from './modules/members/members.service.js';
+import type { MemberServiceContract } from './modules/members/members.types.js';
 
 type AppOptions = {
   service?: AuthServiceContract;
   weddingService?: WeddingServiceContract;
   databaseMiddleware?: RequestHandler;
   enableRateLimit?: boolean;
+  memberService?: MemberServiceContract;
 };
 
 export function createApp(options: AppOptions = {}) {
   const app = express();
   const service = options.service ?? authService;
   const currentWeddingService = options.weddingService ?? weddingService;
+  const currentMemberService = options.memberService ?? memberService;
   const databaseMiddleware =
     options.databaseMiddleware ?? ensureDatabaseConnection;
 
@@ -40,6 +45,11 @@ export function createApp(options: AppOptions = {}) {
     '/api/wedding',
     databaseMiddleware,
     createWeddingRouter(service, currentWeddingService),
+  );
+  app.use(
+    '/api',
+    databaseMiddleware,
+    createMembersRouter(service, currentMemberService),
   );
   app.use((_req, res) => {
     res

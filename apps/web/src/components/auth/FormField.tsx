@@ -6,6 +6,7 @@ type FormFieldProps = {
   value: string;
   error?: string;
   onChange(value: string): void;
+  readOnly?: boolean;
 };
 
 export function FormField({
@@ -16,6 +17,7 @@ export function FormField({
   value,
   error,
   onChange,
+  readOnly,
 }: FormFieldProps) {
   const errorId = `${id}-error`;
 
@@ -31,6 +33,7 @@ export function FormField({
         aria-invalid={Boolean(error)}
         aria-describedby={error ? errorId : undefined}
         onChange={(event) => onChange(event.target.value)}
+        readOnly={readOnly}
       />
       {error ? (
         <span className="field-error" id={errorId}>

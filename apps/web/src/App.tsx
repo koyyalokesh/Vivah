@@ -8,6 +8,8 @@ import { LoginPage } from './routes/LoginPage';
 import { PlaceholderPage } from './routes/PlaceholderPage';
 import { SignupPage } from './routes/SignupPage';
 import { WeddingEditPage } from './routes/WeddingEditPage';
+import { MembersPage } from './routes/MembersPage';
+import { MemberInvitationPage } from './routes/MemberInvitationPage';
 
 function AppProviders() {
   return (
@@ -23,6 +25,10 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <HomePage /> },
       {
+        path: '/member-invitations/:token',
+        element: <MemberInvitationPage />,
+      },
+      {
         element: <PublicOnlyRoute />,
         children: [
           { path: '/login', element: <LoginPage /> },
@@ -34,6 +40,7 @@ const router = createBrowserRouter([
         children: [
           { path: '/app', element: <AppHomePage /> },
           { path: '/app/wedding/edit', element: <WeddingEditPage /> },
+          { path: '/app/members', element: <MembersPage /> },
         ],
       },
       {

@@ -414,7 +414,11 @@ function WeddingEditForm({
             <strong>{user?.name}</strong>
             <span>{user?.email}</span>
           </div>
-          <span className="role-badge">{membership.role}</span>
+          <span
+            className={`role-badge role-badge-${membership.role.toLowerCase()}`}
+          >
+            {membership.role}
+          </span>
           <span className="account-avatar" aria-hidden="true">
             {initials(user?.name ?? 'Vivah user')}
           </span>
@@ -494,16 +498,16 @@ function WeddingEditForm({
                 required
               />
             </div>
-            <EditField
-              id="title"
-              label="Wedding title"
-              value={values.title}
-              onChange={updateField}
-              error={fieldErrors.title}
-              helper="This is the name shown throughout your workspace."
-              optional
-            />
             <div className="form-row">
+              <EditField
+                id="title"
+                label="Wedding title"
+                value={values.title}
+                onChange={updateField}
+                error={fieldErrors.title}
+                helper="The name shown throughout your workspace."
+                optional
+              />
               <EditField
                 id="weddingDate"
                 label="Wedding date"
@@ -513,6 +517,8 @@ function WeddingEditForm({
                 error={fieldErrors.weddingDate}
                 required
               />
+            </div>
+            <div className="form-row">
               <div className="setup-field">
                 <label htmlFor="timeZone">
                   Time zone <span>*</span>
@@ -545,16 +551,16 @@ function WeddingEditForm({
                   </span>
                 ) : null}
               </div>
+              <EditField
+                id="location"
+                label="Location"
+                value={values.location}
+                onChange={updateField}
+                error={fieldErrors.location}
+                helper="City, region, or primary venue."
+                optional
+              />
             </div>
-            <EditField
-              id="location"
-              label="Location"
-              value={values.location}
-              onChange={updateField}
-              error={fieldErrors.location}
-              helper="City, region, or primary celebration venue."
-              optional
-            />
             <div className="setup-field">
               <label htmlFor="description">
                 Description <small>Optional</small>

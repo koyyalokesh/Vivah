@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ApiError, login } from '../api/auth';
+import { getAuthReturnPath } from '../auth/auth-return-path';
 import { useAuth } from '../auth/useAuth';
 import { AuthLayout } from '../components/auth/AuthLayout';
 import { FormField } from '../components/auth/FormField';
@@ -11,7 +12,14 @@ export function LoginPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const { setAuthenticatedSession } = useAuth();
-  const [email, setEmail] = useState('');
+  const invitedEmail =
+    typeof location.state === 'object' &&
+    location.state &&
+    'invitedEmail' in location.state &&
+    typeof location.state.invitedEmail === 'string'
+      ? location.state.invitedEmail
+      : '';
+  const [email, setEmail] = useState(invitedEmail);
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<
@@ -33,14 +41,7 @@ export function LoginPage() {
     try {
       const session = await login({ email, password });
       setAuthenticatedSession(session);
-      const destination =
-        typeof location.state === 'object' &&
-        location.state &&
-        'from' in location.state &&
-        typeof location.state.from === 'string'
-          ? location.state.from
-          : '/app';
-      navigate(destination, { replace: true });
+      navigate(getAuthReturnPath(location.state), { replace: true });
     } catch (caught) {
       if (caught instanceof ApiError) {
         setError(caught.message);
@@ -83,6 +84,7 @@ export function LoginPage() {
           value={email}
           error={fieldErrors.email}
           onChange={setEmail}
+          readOnly={Boolean(invitedEmail)}
         />
         <FormField
           id="password"
@@ -101,7 +103,10 @@ export function LoginPage() {
         </button>
       </form>
       <p className="auth-switch">
-        New to Vivah? <Link to="/signup">Create an account</Link>
+        New to Vivah?{' '}
+        <Link to="/signup" state={location.state}>
+          Create an account
+        </Link>
       </p>
     </AuthLayout>
   );

@@ -186,16 +186,16 @@ export function WeddingSetupPage() {
                 required
               />
             </div>
-            <SetupField
-              id="title"
-              label="Wedding title"
-              value={title}
-              onChange={setTitle}
-              error={fieldErrors.title}
-              helper="This names your workspace and can be updated later."
-              optional
-            />
             <div className="form-row">
+              <SetupField
+                id="title"
+                label="Wedding title"
+                value={title}
+                onChange={setTitle}
+                error={fieldErrors.title}
+                helper="The name shown throughout your workspace."
+                optional
+              />
               <SetupField
                 id="weddingDate"
                 label="Wedding date"
@@ -205,6 +205,8 @@ export function WeddingSetupPage() {
                 error={fieldErrors.weddingDate}
                 required
               />
+            </div>
+            <div className="form-row">
               <div className="setup-field">
                 <label htmlFor="timeZone">
                   Time zone <span>*</span>
@@ -232,17 +234,17 @@ export function WeddingSetupPage() {
                   </span>
                 ) : null}
               </div>
+              <SetupField
+                id="location"
+                label="Location"
+                value={location}
+                onChange={setLocation}
+                error={fieldErrors.location}
+                placeholder="Jaipur, Rajasthan"
+                helper="City, region, or primary venue"
+                optional
+              />
             </div>
-            <SetupField
-              id="location"
-              label="Location"
-              value={location}
-              onChange={setLocation}
-              error={fieldErrors.location}
-              placeholder="Jaipur, Rajasthan"
-              helper="City and region or primary celebration venue"
-              optional
-            />
             <div className="setup-field">
               <label htmlFor="description">
                 Description <small>Optional</small>

@@ -15,6 +15,249 @@
   --line: #e1e4df;
 }
 
+.members-page,
+.invitation-page {
+  min-height: 100vh;
+  background: var(--ivory);
+  color: var(--ink);
+}
+
+.members-header {
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 max(24px, calc((100vw - 1100px) / 2));
+  border-bottom: 1px solid var(--line);
+  background: rgb(247 246 242 / 94%);
+  backdrop-filter: blur(16px);
+}
+.members-header > span {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+
+.members-shell {
+  width: min(900px, calc(100% - 40px));
+  margin: 0 auto;
+  padding: 34px 0 64px;
+}
+
+.members-heading {
+  margin-bottom: 20px;
+}
+.members-heading h1 {
+  margin: 7px 0 6px;
+  font-size: clamp(1.8rem, 3vw, 2.25rem);
+  line-height: 1.12;
+}
+.members-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+.members-card {
+  margin-top: 14px;
+  padding: 22px 24px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 10px 32px rgb(32 42 44 / 5%);
+}
+.members-card h2 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+.members-card-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #edf0ed;
+}
+.members-card-heading > div {
+  display: grid;
+  gap: 4px;
+}
+.members-card-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+.members-count {
+  min-width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--teal-pale);
+  color: var(--teal-dark);
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+.member-invite-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 150px auto;
+  gap: 12px;
+  align-items: end;
+  margin: 16px 0 4px;
+  padding: 16px;
+  border: 1px solid #dce6e2;
+  border-radius: 11px;
+  background: #f6faf8;
+}
+.member-invite-form label {
+  display: grid;
+  gap: 6px;
+  font-size: 0.72rem;
+  font-weight: 650;
+}
+.member-invite-form input,
+.member-invite-form select {
+  min-height: 40px;
+  padding: 0 11px;
+  border: 1px solid #ccd2ce;
+  border-radius: 8px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+}
+.member-invite-form input:focus,
+.member-invite-form select:focus {
+  border-color: var(--teal);
+  outline: none;
+  box-shadow: 0 0 0 3px rgb(36 80 76 / 11%);
+}
+.member-list {
+  display: grid;
+}
+.member-row {
+  display: grid;
+  grid-template-columns: auto minmax(180px, 1fr) auto auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 2px;
+  border-top: 1px solid #edf0ed;
+}
+.member-row:first-child {
+  border-top: 0;
+}
+.member-row div:not(.member-actions):not(.member-avatar) {
+  display: grid;
+  gap: 3px;
+}
+.member-row span {
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+.member-row strong {
+  font-size: 0.82rem;
+}
+.member-avatar {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--teal-pale);
+  color: var(--teal-dark);
+  font-size: 0.75rem;
+  font-weight: 750;
+}
+.member-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.invitation-row {
+  grid-template-columns: minmax(180px, 1fr) auto auto;
+}
+.member-empty {
+  margin: 16px 0 0;
+  padding: 18px;
+  border-radius: 10px;
+  background: #f8f9f7;
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.invitation-page {
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+.invitation-card {
+  width: min(500px, 100%);
+  padding: clamp(26px, 5vw, 38px);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: #fff;
+  text-align: center;
+  box-shadow: 0 18px 50px rgb(32 42 44 / 9%);
+}
+.invitation-card h1 {
+  margin: 18px 0 7px;
+  font-size: clamp(1.65rem, 4vw, 2rem);
+}
+.invitation-card h2 {
+  margin: 8px 0;
+  color: var(--teal-dark);
+  font-size: 1.15rem;
+}
+.invitation-card p {
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+.invitation-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+@media (max-width: 760px) {
+  .members-header {
+    padding: 0 16px;
+  }
+  .members-header > span {
+    display: none;
+  }
+  .members-shell {
+    width: calc(100% - 28px);
+    padding: 24px 0 44px;
+  }
+  .members-card {
+    padding: 18px;
+  }
+  .member-invite-form {
+    grid-template-columns: 1fr;
+    padding: 14px;
+  }
+  .member-row {
+    grid-template-columns: auto 1fr auto;
+  }
+  .invitation-row {
+    grid-template-columns: 1fr auto;
+  }
+  .member-actions {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+  .member-actions .button {
+    flex: 1;
+  }
+  .members-card-heading {
+    align-items: flex-start;
+  }
+}
+
 * {
   box-sizing: border-box;
 }
@@ -178,6 +421,28 @@ h3 {
   background: white;
   color: var(--teal-dark);
   box-shadow: 0 12px 30px rgb(0 0 0 / 13%);
+}
+.auth-page .button,
+.app-welcome-page .button,
+.wedding-setup-page .button,
+.wedding-edit-page .button,
+.members-page .button,
+.invitation-page .button {
+  min-height: 42px;
+  gap: 8px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+}
+.members-page .button-small,
+.wedding-edit-page .button-small,
+.app-welcome-page .button-small {
+  min-height: 36px;
+  padding-inline: 13px;
+  font-size: 0.74rem;
+}
+.auth-page .button {
+  min-height: 40px;
 }
 a:focus-visible,
 button:focus-visible,
@@ -1171,7 +1436,8 @@ summary:focus-visible {
 .auth-page,
 .app-welcome-page {
   min-height: 100vh;
-  padding: 38px 24px;
+  min-height: 100svh;
+  padding: 18px 24px;
   background:
     radial-gradient(circle at 12% 10%, rgb(255 255 255 / 90%), transparent 28%),
     radial-gradient(circle at 88% 82%, rgb(36 80 76 / 12%), transparent 33%),
@@ -1181,41 +1447,42 @@ summary:focus-visible {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 .auth-wordmark {
-  margin-bottom: 36px;
+  margin-bottom: 14px;
 }
 .auth-panel {
-  width: min(480px, 100%);
-  padding: 44px;
+  width: min(420px, 100%);
+  padding: 22px 28px;
   border: 1px solid var(--line);
-  border-radius: 22px;
+  border-radius: 16px;
   background: white;
-  box-shadow: 0 24px 70px rgb(32 42 44 / 11%);
+  box-shadow: 0 18px 55px rgb(32 42 44 / 9%);
 }
 .auth-heading {
   text-align: center;
 }
 .auth-heading h1 {
-  margin: 13px 0 10px;
-  font-size: clamp(2rem, 5vw, 2.65rem);
-  line-height: 1.12;
+  margin: 7px 0 6px;
+  font-size: clamp(1.55rem, 4vw, 1.85rem);
+  line-height: 1.15;
 }
 .auth-heading p {
-  margin-bottom: 30px;
+  margin: 0 0 16px;
   color: var(--muted);
-  font-size: 0.9rem;
-  line-height: 1.65;
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 .auth-form,
 .form-field {
   display: grid;
 }
 .auth-form {
-  gap: 18px;
+  gap: 10px;
 }
 .form-field {
-  gap: 7px;
+  gap: 5px;
 }
 .form-field label {
   color: var(--ink);
@@ -1224,14 +1491,14 @@ summary:focus-visible {
 }
 .form-field input {
   width: 100%;
-  min-height: 48px;
-  padding: 0 14px;
+  min-height: 40px;
+  padding: 0 12px;
   border: 1px solid #ccd2ce;
   border-radius: 9px;
   background: #fff;
   color: var(--ink);
   font: inherit;
-  font-size: 0.9rem;
+  font-size: 0.84rem;
   transition:
     border-color 160ms ease,
     box-shadow 160ms ease;
@@ -1258,7 +1525,7 @@ summary:focus-visible {
   line-height: 1.5;
 }
 .password-hint {
-  margin: -10px 0 0;
+  margin: -6px 0 0;
   color: var(--muted);
   font-size: 0.7rem;
 }
@@ -1273,14 +1540,14 @@ summary:focus-visible {
   text-align: center;
 }
 .auth-switch {
-  margin: 26px 0 0;
+  margin: 14px 0 0;
 }
 .auth-switch a {
   color: var(--teal);
   font-weight: 700;
 }
 .auth-footnote {
-  margin: 28px 0 0;
+  margin: 12px 0 0;
 }
 .auth-loading {
   min-height: 100vh;
@@ -1313,21 +1580,21 @@ summary:focus-visible {
   margin: 0 auto;
 }
 .app-welcome-card {
-  width: min(680px, 100%);
+  width: min(620px, 100%);
   margin: auto;
-  padding: 58px;
+  padding: 38px;
   border: 1px solid var(--line);
-  border-radius: 24px;
+  border-radius: 18px;
   background: white;
   text-align: center;
-  box-shadow: 0 28px 80px rgb(32 42 44 / 12%);
+  box-shadow: 0 20px 60px rgb(32 42 44 / 10%);
 }
 .account-ready-mark {
-  width: 48px;
-  height: 48px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
-  margin: 0 auto 24px;
+  margin: 0 auto 18px;
   border-radius: 50%;
   background: var(--teal-pale);
   color: var(--teal);
@@ -1335,23 +1602,24 @@ summary:focus-visible {
   font-weight: 700;
 }
 .app-welcome-card h1 {
-  margin: 14px 0;
-  font-size: clamp(2.2rem, 5vw, 3.5rem);
-  line-height: 1.08;
+  margin: 10px 0;
+  font-size: clamp(1.8rem, 4vw, 2.35rem);
+  line-height: 1.12;
 }
 .app-welcome-card > p {
   max-width: 520px;
   margin: 0 auto;
   color: var(--muted);
-  line-height: 1.75;
+  font-size: 0.84rem;
+  line-height: 1.6;
 }
 .account-detail {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  margin-top: 32px;
-  padding: 16px;
-  border-radius: 11px;
+  margin-top: 24px;
+  padding: 13px;
+  border-radius: 9px;
   background: var(--teal-pale);
 }
 .account-detail span {
@@ -1367,9 +1635,53 @@ summary:focus-visible {
 .app-welcome-card .form-alert {
   margin-top: 18px;
 }
-.app-edit-link {
-  width: fit-content;
-  margin: 22px auto 0;
+.app-action-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 18px;
+}
+.app-action-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 13px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--ink);
+  text-align: left;
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+.app-action-card:hover {
+  border-color: #b9cbc5;
+  background: #f7faf8;
+  transform: translateY(-1px);
+}
+.app-action-card > span:nth-child(2) {
+  display: grid;
+  gap: 3px;
+}
+.app-action-card strong {
+  font-size: 0.76rem;
+}
+.app-action-card small {
+  color: var(--muted);
+  font-size: 0.62rem;
+  line-height: 1.35;
+}
+.app-action-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  background: var(--teal-pale);
+  color: var(--teal-dark);
+  font-weight: 750;
 }
 
 .form-notice,
@@ -1389,10 +1701,11 @@ summary:focus-visible {
 
 .wedding-edit-page {
   min-height: 100vh;
+  min-height: 100svh;
   background: #f7f6f2;
 }
 .edit-header {
-  height: 64px;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1440,43 +1753,72 @@ summary:focus-visible {
   font-size: 0.61rem;
 }
 .role-badge {
-  padding: 4px 8px;
+  width: fit-content;
+  min-height: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  border: 1px solid transparent;
   border-radius: 999px;
-  background: var(--teal-pale);
-  color: var(--teal-dark);
-  font-size: 0.59rem;
+  font-size: 0.61rem;
   font-weight: 750;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.055em;
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.role-badge::before {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: currentcolor;
+  content: '';
+  box-shadow: 0 0 0 3px rgb(255 255 255 / 52%);
+}
+.role-badge.role-badge-admin {
+  border-color: #c4d9d3;
+  background: #eaf3f0;
+  color: #1d5a52;
+}
+.role-badge.role-badge-manager {
+  border-color: #e2d8c7;
+  background: #f7f2e9;
+  color: #715f43;
+}
+.member-row .role-badge {
+  font-size: 0.61rem;
 }
 .edit-shell {
-  width: min(1100px, calc(100% - 48px));
+  width: min(980px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 38px 0 70px;
+  padding: 18px 0 28px;
 }
 .edit-intro {
   display: grid;
   justify-items: center;
-  margin-bottom: 26px;
+  margin-bottom: 12px;
   text-align: center;
 }
 .edit-intro .section-eyebrow {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .edit-intro h1 {
   margin: 0;
-  font-size: clamp(2rem, 4vw, 2.7rem);
+  font-size: clamp(1.6rem, 3vw, 1.95rem);
   line-height: 1.12;
 }
 .edit-intro > p {
-  margin: 9px 0 13px;
+  margin: 5px 0 8px;
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.76rem;
 }
 .save-state {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 11px;
+  padding: 5px 9px;
   border-radius: 999px;
   background: rgb(36 80 76 / 8%);
   color: var(--teal-dark);
@@ -1494,20 +1836,20 @@ summary:focus-visible {
 }
 .edit-card {
   display: grid;
-  grid-template-columns: minmax(0, 1.75fr) minmax(300px, 0.95fr);
+  grid-template-columns: minmax(0, 1.75fr) minmax(260px, 0.85fr);
   overflow: hidden;
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 14px;
   background: white;
 }
 .edit-form {
-  padding: 35px 42px 37px;
+  padding: 20px 22px;
 }
 .edit-actions {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding-top: 4px;
+  padding-top: 0;
 }
 .edit-actions .button {
   min-width: 118px;
@@ -1523,7 +1865,7 @@ summary:focus-visible {
   color: var(--teal);
 }
 .edit-aside {
-  padding: 37px 34px;
+  padding: 22px;
   border-left: 1px solid var(--line);
   background: #fbfaf7;
 }
@@ -1539,9 +1881,9 @@ summary:focus-visible {
 }
 .edit-aside ol {
   display: grid;
-  gap: 26px;
+  gap: 14px;
   padding: 0;
-  margin: 31px 0 0;
+  margin: 18px 0 0;
   list-style: none;
 }
 .edit-aside li {
@@ -1581,7 +1923,8 @@ summary:focus-visible {
   background: rgb(32 42 44 / 38%);
   backdrop-filter: blur(7px);
 }
-.leave-dialog {
+.leave-dialog,
+.confirmation-dialog {
   width: min(440px, 100%);
   padding: 30px;
   border: 1px solid var(--line);
@@ -1599,17 +1942,20 @@ summary:focus-visible {
   color: #93000a;
   font-weight: 800;
 }
-.leave-dialog h2 {
+.leave-dialog h2,
+.confirmation-dialog h2 {
   margin: 18px 0 8px;
   font-size: 1.3rem;
 }
-.leave-dialog p {
+.leave-dialog p,
+.confirmation-dialog p {
   margin: 0;
   color: var(--muted);
   font-size: 0.82rem;
   line-height: 1.6;
 }
-.leave-dialog > div {
+.leave-dialog > div,
+.confirmation-dialog > div {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
@@ -1626,12 +1972,13 @@ summary:focus-visible {
 
 .wedding-setup-page {
   min-height: 100vh;
+  min-height: 100svh;
   background:
     radial-gradient(circle at 8% 6%, rgb(255 255 255 / 90%), transparent 24%),
     var(--ivory);
 }
 .setup-header {
-  height: 76px;
+  height: 58px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1676,19 +2023,19 @@ summary:focus-visible {
   color: var(--teal);
 }
 .setup-shell {
-  width: min(1160px, calc(100% - 48px));
+  width: min(1020px, calc(100% - 48px));
   margin: 0 auto;
-  padding: 58px 0 72px;
+  padding: 18px 0 28px;
 }
 .setup-intro {
-  max-width: 700px;
-  margin-bottom: 30px;
+  max-width: 640px;
+  margin-bottom: 14px;
 }
 .setup-meta {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-bottom: 16px;
+  margin-bottom: 9px;
   color: var(--muted);
   font-size: 0.72rem;
   font-weight: 550;
@@ -1697,20 +2044,20 @@ summary:focus-visible {
   margin: 0;
 }
 .setup-intro h1 {
-  margin-bottom: 10px;
-  font-size: clamp(2.2rem, 4vw, 3.35rem);
-  line-height: 1.08;
+  margin-bottom: 5px;
+  font-size: clamp(1.7rem, 3vw, 2.1rem);
+  line-height: 1.12;
 }
 .setup-intro > p {
   max-width: 610px;
   margin: 0;
   color: var(--muted);
-  font-size: 0.95rem;
-  line-height: 1.7;
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 .setup-card {
   display: grid;
-  grid-template-columns: minmax(0, 1.65fr) minmax(310px, 0.85fr);
+  grid-template-columns: minmax(0, 1.7fr) minmax(270px, 0.8fr);
   overflow: hidden;
   border: 1px solid var(--line);
   border-radius: 18px;
@@ -1719,17 +2066,17 @@ summary:focus-visible {
 }
 .wedding-form {
   display: grid;
-  gap: 21px;
-  padding: 38px 42px 40px;
+  gap: 11px;
+  padding: 20px 22px;
 }
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  gap: 12px;
 }
 .setup-field {
   display: grid;
-  gap: 7px;
+  gap: 5px;
   align-content: start;
 }
 .setup-field label {
@@ -1737,7 +2084,7 @@ summary:focus-visible {
   justify-content: space-between;
   gap: 12px;
   color: var(--ink);
-  font-size: 0.77rem;
+  font-size: 0.72rem;
   font-weight: 650;
 }
 .setup-field label > span {
@@ -1765,14 +2112,14 @@ summary:focus-visible {
 }
 .setup-field input,
 .setup-field select {
-  min-height: 49px;
-  padding: 0 14px;
+  min-height: 38px;
+  padding: 0 11px;
 }
 .setup-field textarea {
-  min-height: 92px;
+  min-height: 58px;
   resize: vertical;
-  padding: 13px 14px;
-  line-height: 1.5;
+  padding: 9px 11px;
+  line-height: 1.4;
 }
 .setup-field input:focus,
 .setup-field select:focus,
@@ -1788,17 +2135,17 @@ summary:focus-visible {
 }
 .field-help {
   color: var(--muted);
-  font-size: 0.67rem;
-  line-height: 1.4;
+  font-size: 0.62rem;
+  line-height: 1.25;
 }
 .setup-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
-  padding-top: 3px;
+  gap: 12px;
+  padding-top: 0;
 }
 .setup-actions .button {
-  min-width: 190px;
+  min-width: 142px;
 }
 .setup-actions p {
   margin: 0;
@@ -1815,7 +2162,7 @@ summary:focus-visible {
   flex-direction: column;
   justify-content: space-between;
   overflow: hidden;
-  padding: 40px 36px 30px;
+  padding: 22px 22px 18px;
   border-left: 1px solid var(--line);
   background: #eef3f0;
 }
@@ -1827,12 +2174,12 @@ summary:focus-visible {
   text-transform: uppercase;
 }
 .setup-aside h2 {
-  margin: 10px 0 29px;
-  font-size: 1.55rem;
+  margin: 6px 0 14px;
+  font-size: 1.1rem;
 }
 .setup-aside ol {
   display: grid;
-  gap: 24px;
+  gap: 14px;
   padding: 0;
   margin: 0;
   list-style: none;
@@ -1844,8 +2191,8 @@ summary:focus-visible {
   align-items: start;
 }
 .setup-aside li > span {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   display: grid;
   place-items: center;
   border: 1px solid #bdcbc5;
@@ -1860,18 +2207,18 @@ summary:focus-visible {
   margin: 2px 0 5px;
   color: var(--ink);
   font-family: 'Manrope', sans-serif;
-  font-size: 0.84rem;
+  font-size: 0.76rem;
 }
 .setup-aside li p {
   margin: 0;
   color: var(--muted);
-  font-size: 0.72rem;
-  line-height: 1.5;
+  font-size: 0.66rem;
+  line-height: 1.4;
 }
 .setup-art {
   position: relative;
-  height: 135px;
-  margin-top: 35px;
+  height: 70px;
+  margin-top: 18px;
   opacity: 0.9;
 }
 .arch {
@@ -1883,23 +2230,23 @@ summary:focus-visible {
 }
 .arch-one {
   left: 8%;
-  width: 150px;
-  height: 145px;
+  width: 118px;
+  height: 88px;
   background: rgb(255 255 255 / 32%);
 }
 .arch-two {
   right: -3%;
-  width: 118px;
-  height: 110px;
+  width: 88px;
+  height: 68px;
   border-color: rgb(185 173 153 / 80%);
 }
 .art-ring {
   position: absolute;
   left: 46%;
-  top: 22px;
-  width: 54px;
-  height: 54px;
-  border: 12px solid rgb(36 80 76 / 10%);
+  top: 16px;
+  width: 40px;
+  height: 40px;
+  border: 9px solid rgb(36 80 76 / 10%);
   border-radius: 50%;
 }
 
@@ -1974,25 +2321,13 @@ summary:focus-visible {
     grid-template-columns: 1fr;
   }
   .setup-aside {
-    border-top: 1px solid var(--line);
-    border-left: 0;
-  }
-  .setup-aside ol {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 18px;
-  }
-  .setup-aside li {
-    grid-template-columns: 1fr;
-  }
-  .setup-art {
     display: none;
   }
   .edit-card {
     grid-template-columns: 1fr;
   }
   .edit-aside {
-    border-top: 1px solid var(--line);
-    border-left: 0;
+    display: none;
   }
 }
 
@@ -2171,21 +2506,26 @@ summary:focus-visible {
   }
   .auth-page,
   .app-welcome-page {
-    padding: 25px 16px;
+    padding: 14px;
   }
-  .auth-panel,
+  .auth-panel {
+    padding: 20px;
+  }
   .app-welcome-card {
-    padding: 34px 22px;
+    padding: 26px 20px;
   }
   .auth-wordmark {
-    margin-bottom: 25px;
+    margin-bottom: 12px;
   }
   .app-header {
-    margin-bottom: 35px;
+    margin-bottom: 24px;
+  }
+  .app-action-grid {
+    grid-template-columns: 1fr;
   }
   .setup-header {
-    height: 68px;
-    padding: 0 20px;
+    height: 60px;
+    padding: 0 16px;
   }
   .account-name {
     display: none;
@@ -2195,8 +2535,8 @@ summary:focus-visible {
     font-size: 0.7rem;
   }
   .setup-shell {
-    width: calc(100% - 40px);
-    padding: 38px 0 50px;
+    width: calc(100% - 28px);
+    padding: 26px 0 42px;
   }
   .setup-meta {
     align-items: flex-start;
@@ -2204,10 +2544,10 @@ summary:focus-visible {
     gap: 10px;
   }
   .setup-intro {
-    margin-bottom: 24px;
+    margin-bottom: 18px;
   }
   .setup-intro h1 {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
   .setup-card {
     overflow: visible;
@@ -2221,13 +2561,13 @@ summary:focus-visible {
     border-radius: 16px;
   }
   .wedding-form {
-    gap: 19px;
-    padding: 25px 20px;
+    gap: 16px;
+    padding: 22px 18px;
     background: white;
   }
   .form-row {
     grid-template-columns: 1fr;
-    gap: 19px;
+    gap: 16px;
   }
   .setup-actions {
     align-items: stretch;
@@ -2241,8 +2581,8 @@ summary:focus-visible {
     text-align: center;
   }
   .setup-aside {
-    margin-top: 18px;
-    padding: 27px 21px;
+    margin-top: 14px;
+    padding: 22px 18px;
   }
   .setup-aside h2 {
     margin-bottom: 23px;
@@ -2327,11 +2667,13 @@ summary:focus-visible {
     align-items: end;
     padding: 12px;
   }
-  .leave-dialog {
+  .leave-dialog,
+  .confirmation-dialog {
     padding: 24px 20px;
     border-radius: 20px;
   }
-  .leave-dialog > div {
+  .leave-dialog > div,
+  .confirmation-dialog > div {
     flex-direction: column;
   }
 }

@@ -1,4 +1,5 @@
 import type { RequestHandler } from 'express';
+import type { ParamsDictionary } from 'express-serve-static-core';
 import { config } from '../../config.js';
 import { AppError } from '../../shared/app-error.js';
 import type { AuthServiceContract, PublicUser } from './auth.types.js';
@@ -7,15 +8,11 @@ export const sessionCookieName = 'vivah_session';
 
 export type AuthLocals = { user: PublicUser };
 
-export function requireAuthentication(
+export function requireAuthentication<
+  Params extends ParamsDictionary = ParamsDictionary,
+>(
   service: AuthServiceContract,
-): RequestHandler<
-  Record<string, never>,
-  unknown,
-  unknown,
-  unknown,
-  AuthLocals
-> {
+): RequestHandler<Params, unknown, unknown, unknown, AuthLocals> {
   return async (req, res, next) => {
     try {
       const user = await service.authenticate(req.cookies[sessionCookieName]);

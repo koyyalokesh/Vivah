@@ -13,7 +13,9 @@ Copy-Item apps/web/.env.example apps/web/.env.local
 npm run dev
 ```
 
-Set `MONGODB_URI` in `apps/api/.env` to a development-only MongoDB database. The example uses a local database at `mongodb://127.0.0.1:27017/vivah_dev`. React runs at http://localhost:5173 and Express runs at http://localhost:3001. Vite forwards `/api/*` requests to Express without removing the `/api` prefix.
+Set `MONGODB_URI` in `apps/api/.env` to a development-only MongoDB database. To send Wedding Member invitations, also set a server-only `RESEND_API_KEY`, a verified `EMAIL_FROM` address, and a unique `MEMBER_INVITATION_HMAC_SECRET`. React runs at http://localhost:5173 and Express runs at http://localhost:3001. Vite forwards `/api/*` requests to Express without removing the `/api` prefix.
+
+Invitation acceptance, Admin role changes, and member removal use MongoDB transactions to preserve membership integrity. Use MongoDB Atlas or a replica-set deployment when testing those mutations.
 
 Available application routes:
 
@@ -22,6 +24,8 @@ Available application routes:
 - `/login`: account login.
 - `/app`: authenticated wedding setup for users without a wedding, followed by the initial workspace screen.
 - `/app/wedding/edit`: authenticated Admin and Manager form for updating the current wedding's details.
+- `/app/members`: authenticated member directory with Admin-only management controls.
+- `/member-invitations/:token`: secure member-invitation preview and acceptance flow.
 
 Run independently in two terminals:
 
@@ -59,7 +63,8 @@ Both return `{ "data": { "status": "ok" } }`. These commands verify API liveness
 - `apps/api/src/app.ts`: creates and default-exports Express; importing it does not open a port.
 - `apps/api/src/server.ts`: local listener using validated configuration.
 - `apps/api/src/modules/auth`: authentication routes, controller, service, repositories, validation and Mongoose models.
-- `apps/api/src/modules/wedding`: wedding creation and editing, membership, validation and wedding-scoped persistence.
+- `apps/api/src/modules/wedding`: wedding creation and editing plus the core membership model.
+- `apps/api/src/modules/members`: wedding-scoped member listing, invitations, role changes and removals.
 - `apps/web/src/auth`: browser session state and protected-route handling.
 - `docs/PRD.md`, `docs/SYSTEM_ARCHITECTURE.md`, `docs/DATABASE_DESIGN.md`, `docs/API_DESIGN.md`: existing design baseline, preserved.
 - `docs/PROJECT_STATUS.md`: living record of completed implementation milestones and the next planned step.
@@ -78,6 +83,6 @@ The intended hosting uses separate Vercel web and API projects. Vercel can impor
 
 ## Scope and next task
 
-The public marketing homepage, authentication foundation, wedding workspace creation, and wedding-details editing are implemented. The dashboard shown on the homepage is an illustrative preview rather than a working application feature. MongoDB currently stores users, sessions, shared authentication rate-limit counters, weddings and wedding memberships. Password reset, member invitations, dashboard business modules, R2, email, Places and jobs are not implemented. Existing historical implementation notes are not proof of implemented features here.
+The public marketing homepage, authentication foundation, wedding workspace creation, wedding-details editing, and Wedding Member management are implemented. The dashboard shown on the homepage is an illustrative preview rather than a working application feature. MongoDB currently stores users, sessions, shared authentication rate-limit counters, weddings, wedding memberships and member invitations. Password reset, dashboard business modules, R2, guest email jobs and Places are not implemented. Existing historical implementation notes are not proof of implemented features here.
 
-Next: implement Wedding Member management, starting with Admin-only invitation and membership controls. Gallery tokens remain deferred until the gallery milestone because the approved database document leaves stable raw-token recovery unresolved. RSVP scope, media verification, email throughput, and public sharing remain decisions for their respective milestones.
+Next: implement wedding Events before Tasks so each task can later reference a real ceremony. Gallery tokens remain deferred until the gallery milestone because the approved database document leaves stable raw-token recovery unresolved. RSVP scope, media verification, email throughput, and public sharing remain decisions for their respective milestones.

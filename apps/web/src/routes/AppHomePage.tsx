@@ -54,12 +54,32 @@ export function AppHomePage() {
             {wedding.title || `${wedding.brideName} & ${wedding.groomName}`}
           </strong>
         </div>
-        <Link
-          className="button button-primary app-edit-link"
-          to="/app/wedding/edit"
-        >
-          Edit wedding details
-        </Link>
+        <div className="app-action-grid">
+          <Link className="app-action-card" to="/app/wedding/edit">
+            <span className="app-action-icon" aria-hidden="true">
+              ✎
+            </span>
+            <span>
+              <strong>Edit wedding details</strong>
+              <small>Names, date, location and description</small>
+            </span>
+            <span aria-hidden="true">→</span>
+          </Link>
+          <Link className="app-action-card" to="/app/members">
+            <span className="app-action-icon" aria-hidden="true">
+              ◎
+            </span>
+            <span>
+              <strong>Wedding members</strong>
+              <small>
+                {membership.role === 'ADMIN'
+                  ? 'Invite people and manage access'
+                  : 'View the people planning this wedding'}
+              </small>
+            </span>
+            <span aria-hidden="true">→</span>
+          </Link>
+        </div>
         {error ? (
           <div className="form-alert" role="alert">
             {error}

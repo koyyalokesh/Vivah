@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ApiError, signup } from '../api/auth';
+import { getAuthReturnPath } from '../auth/auth-return-path';
 import { useAuth } from '../auth/useAuth';
 import { AuthLayout } from '../components/auth/AuthLayout';
 import { FormField } from '../components/auth/FormField';
@@ -9,11 +10,18 @@ type Fields = 'name' | 'email' | 'password';
 
 export function SignupPage() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setAuthenticatedSession } = useAuth();
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const invitedEmail =
+    typeof location.state === 'object' &&
+    location.state &&
+    'invitedEmail' in location.state &&
+    typeof location.state.invitedEmail === 'string'
+      ? location.state.invitedEmail
+      : '';
+  const [email, setEmail] = useState(invitedEmail);
   const [password, setPassword] = useState('');
-  const [confirmation, setConfirmation] = useState('');
   const [error, setError] = useState('');
   const [fieldErrors, setFieldErrors] = useState<
     Partial<Record<Fields, string>>
@@ -25,16 +33,11 @@ export function SignupPage() {
     setError('');
     setFieldErrors({});
 
-    if (password !== confirmation) {
-      setFieldErrors({ password: 'Passwords do not match.' });
-      return;
-    }
-
     setIsSubmitting(true);
     try {
       const session = await signup({ name, email, password });
       setAuthenticatedSession(session);
-      navigate('/app', { replace: true });
+      navigate(getAuthReturnPath(location.state), { replace: true });
     } catch (caught) {
       if (caught instanceof ApiError) {
         setError(caught.message);
@@ -80,6 +83,7 @@ export function SignupPage() {
           value={email}
           error={fieldErrors.email}
           onChange={setEmail}
+          readOnly={Boolean(invitedEmail)}
         />
         <FormField
           id="password"
@@ -90,15 +94,6 @@ export function SignupPage() {
           error={fieldErrors.password}
           onChange={setPassword}
         />
-        <FormField
-          id="password-confirmation"
-          label="Confirm password"
-          type="password"
-          autoComplete="new-password"
-          value={confirmation}
-          error={fieldErrors.password}
-          onChange={setConfirmation}
-        />
         <p className="password-hint">Use at least 8 characters.</p>
         <button
           className="button button-primary auth-submit"
@@ -108,7 +103,10 @@ export function SignupPage() {
         </button>
       </form>
       <p className="auth-switch">
-        Already have an account? <Link to="/login">Log in</Link>
+        Already have an account?{' '}
+        <Link to="/login" state={location.state}>
+          Log in
+        </Link>
       </p>
     </AuthLayout>
   );
