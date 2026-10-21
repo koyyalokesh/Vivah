@@ -1,6 +1,6 @@
 # Vivah
 
-Vivah is a wedding planning application. It uses React + TypeScript + Vite and a Node.js + Express + TypeScript API in one npm-workspaces repository. The current application includes the public homepage, authentication, wedding workspace creation, and wedding-details editing.
+Vivah is a wedding planning application. It uses React + TypeScript + Vite and a Node.js + Express + TypeScript API in one npm-workspaces repository. The current application includes the public homepage, authentication, wedding workspace creation, wedding-details editing and Wedding Member management.
 
 ## Local setup
 
@@ -57,6 +57,64 @@ Invoke-RestMethod http://localhost:5173/api/health
 
 Both return `{ "data": { "status": "ok" } }`. These commands verify API liveness and the frontend development proxy. The API also exposes signup, login, logout and current-user routes under `/api/auth`, plus authenticated `GET /api/wedding`, `POST /api/wedding`, and `PATCH /api/wedding` routes. Unknown API routes return JSON 404; malformed JSON returns 400; oversized JSON returns 413; unexpected errors return generic 500 without stack traces. Ports are fixed; if changing the API port, update the proxy target too.
 
+## Vercel deployment
+
+Deploy the monorepo as two Vercel projects connected to the same GitHub repository:
+
+| Vercel project | Root directory | Framework |
+| -------------- | -------------- | --------- |
+| Vivah API      | `apps/api`     | Express   |
+| Vivah Web      | `apps/web`     | Vite      |
+
+Both projects use Node.js 22. The API project detects the default Express export in `src/app.ts`; `src/server.ts` remains the local listener and is not the Vercel entry point. Each project explicitly installs its development dependencies during the Vercel build because TypeScript and Vite are build tools, while `NODE_ENV=production` is needed by the deployed API at runtime. The web project's `vercel.ts` sends `/api/*` to the API project without changing the browser URL, disables API response caching and falls back to `index.html` for React routes.
+
+Configure these environment variables in the **API project**. Use separate values for Preview and Production when both environments are enabled:
+
+```text
+NODE_ENV=production
+MONGODB_URI=<MongoDB Atlas connection string including the database name>
+APP_ORIGIN=https://<public Vivah web domain>
+SESSION_DURATION_DAYS=7
+RATE_LIMIT_HMAC_SECRET=<unique random value of at least 32 characters>
+MEMBER_INVITATION_HMAC_SECRET=<different unique random value of at least 32 characters>
+MEMBER_INVITATION_DURATION_DAYS=7
+RESEND_API_KEY=<server-only Resend API key>
+EMAIL_FROM=Vivah <invites@verified-mail-domain.example>
+```
+
+Generate the two HMAC secrets independently and store them only in Vercel:
+
+```powershell
+node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
+node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
+```
+
+Configure this non-secret build-time variable in the **web project**:
+
+```text
+VIVAH_API_ORIGIN=https://<public Vivah API domain>
+```
+
+Use origins only: include `https://`, omit trailing paths and query strings, and do not include a trailing slash in `APP_ORIGIN`. The web deployment fails with a clear configuration error if `VIVAH_API_ORIGIN` is missing or unsafe. No server credential belongs in the web project or in a `VITE_*` variable.
+
+Leave the Vercel Install Command on its repository-configured value, `npm install --production=false`, for both projects. This keeps build-only packages available even though the API deployment sets `NODE_ENV=production`; Vercel still bundles only the runtime code required by each deployment.
+
+Use a transaction-capable MongoDB Atlas cluster because invitation acceptance and final-Admin protection use transactions. Configure Atlas network access for Vercel's outbound connections and keep the database user limited to the Vivah production database. Verify a Resend sending domain before using invitations with real recipients.
+
+After deploying both projects, verify:
+
+```text
+https://<api-domain>/api/health
+https://<web-domain>/api/health
+https://<web-domain>/login
+https://<web-domain>/signup
+https://<web-domain>/app
+```
+
+Both health URLs must return `{ "data": { "status": "ok" } }`. Then test signup, secure session restoration after refresh, wedding creation and editing, logout, invitation delivery and acceptance, Admin-only member changes, and direct refreshes of React routes. Check that the `vivah_session` cookie is `HttpOnly`, `Secure`, `SameSite=Lax` and stored for the web domain.
+
+Use `main` as the Vercel Production Branch after reviewing and merging `dev`. The current backend trusts one exact `APP_ORIGIN`; arbitrary Vercel preview URLs therefore cannot perform protected mutations until preview-origin support is designed explicitly.
+
 ## Structure and boundaries
 
 - `apps/web`: React homepage, client-side routes and future browser API clients.
@@ -73,13 +131,13 @@ Future features use domain routers, controllers, services, and wedding-scoped pe
 
 ## Configuration and hosting direction
 
-Actual `.env` files are ignored; commit examples only. The backend validates its port, environment, MongoDB URI, application origin and session duration. `API_PROXY_TARGET` configures the local Vite server and is not bundled into browser code. Never put server credentials in `VITE_*` variables.
+Actual `.env` files and Vercel's local `.vercel/` metadata are ignored; commit examples only. The backend validates its port, environment, MongoDB URI, application origin and session duration. `API_PROXY_TARGET` configures the local Vite server. `VIVAH_API_ORIGIN` configures Vercel's server-side web rewrite. Neither value is bundled into browser code. Never put server credentials in `VITE_*` variables.
 
 Passwords are hashed with Argon2id. A custom server-side session stores only a SHA-256 token hash in MongoDB; the browser receives the raw random token in the `HttpOnly` `vivah_session` cookie. Sessions expire after seven days by default. Production cookies are also `Secure`, and state-changing auth requests validate their browser origin.
 
 Signup and login limits are stored in MongoDB so every Vercel instance shares the same counters. Client identifiers are protected with HMAC-SHA-256 and expired counters are removed through a TTL index. Set a unique random `RATE_LIMIT_HMAC_SECRET` of at least 32 characters in production; the example development value must never be used for deployment.
 
-The intended hosting uses separate Vercel web and API projects. Vercel can import the default-exported Express app at src/app.ts. Production API rewrites and SPA fallback must be configured and tested in a deployment milestone; Vite's proxy is local only. No external infrastructure is provisioned here.
+The intended hosting uses separate Vercel web and API projects. Vercel can import the default-exported Express app at `src/app.ts`. The web project includes production API rewrites, no-store API headers and the SPA fallback; Vite's proxy remains local only. MongoDB Atlas, Vercel projects, domains and secrets must still be provisioned outside the repository.
 
 ## Scope and next task
 

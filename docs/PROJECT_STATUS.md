@@ -1,7 +1,7 @@
 # Vivah Project Status
 
-**Last updated:** 18 October 2026
-**Current state:** Frontend visual redesign completed; Events are next
+**Last updated:** 22 October 2026
+**Current state:** Vercel deployment configuration prepared; production deployment is next
 **Current branch:** `dev`
 
 ## Purpose
@@ -231,6 +231,37 @@ Current limitation:
 - Password reset remains unimplemented, so no nonfunctional forgot-password route was added during the visual redesign.
 - Final hands-on checks at 390px on a physical or interactive browser remain recommended because the browser automation runtime was unavailable.
 
+### 8. Vercel deployment preparation
+
+**Status:** Configuration completed; deployment pending
+
+**Completed:** 22 October 2026
+
+**Commit:** Not committed - awaiting review
+
+Delivered:
+
+- Node.js 22 pinned consistently for the monorepo, web project and API project.
+- Vercel install commands retain TypeScript and other build-only dependencies when the API uses `NODE_ENV=production`.
+- Dynamic Vercel web configuration that reads the API origin from deployment settings rather than committing an account-specific hostname.
+- Same-origin `/api/*` forwarding to the Express project without removing the `/api` prefix.
+- Explicit no-store handling for proxied API responses and an SPA fallback for direct React route navigation.
+- Safe web environment example and complete two-project Vercel setup instructions in the README.
+- Production environment checklist covering MongoDB Atlas, request-origin protection, session cookies, invitation secrets and Resend.
+
+Verified:
+
+- Formatting, ESLint, frontend and backend TypeScript checks and production builds passed on Node.js 22.19.0.
+- 39 API tests and 15 frontend tests passed.
+- The deployment configuration generated the expected API rewrite and SPA fallback for a valid HTTPS origin.
+- Unsafe non-HTTPS and path-bearing API origins were rejected before deployment configuration could be generated.
+
+Current limitation:
+
+- The Vercel web and API projects, Atlas production database, public domains and production secrets must be created in their respective dashboards.
+- A live production smoke test is still required after deployment.
+- The backend currently trusts one exact `APP_ORIGIN`; arbitrary Vercel preview URLs cannot perform protected mutations.
+
 ## Current working capabilities
 
 - Public Vivah marketing homepage.
@@ -258,13 +289,13 @@ Current limitation:
 - Cloudflare R2 galleries and photo uploads.
 - Background and bulk guest email jobs.
 - Google Places vendor discovery.
-- Production deployment configuration.
+- Live production deployment and post-deployment verification.
 
 ## Next recommended milestone
 
-Build wedding Events incrementally, starting with event listing and creation before edit, archive and cover-image work.
+Create the Vercel web and API projects, configure their production environment variables and complete the live deployment smoke test.
 
-This milestone is planned and has not started.
+After deployment is verified, build wedding Events incrementally, starting with event listing and creation before edit, archive and cover-image work.
 
 ## Update rule
 

@@ -6,7 +6,11 @@
     "apps/api"
   ],
   "engines": {
-    "node": ">=22.19.0"
+    "node": "22.x"
+  },
+  "allowScripts": {
+    "argon2@0.45.1": true,
+    "esbuild@0.28.2": true
   },
   "scripts": {
     "dev": "concurrently --kill-others -n web,api \"npm run dev:web\" \"npm run dev:api\"",
