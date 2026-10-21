@@ -237,7 +237,7 @@ Current limitation:
 
 **Completed:** 22 October 2026
 
-**Commit:** Not committed - awaiting review
+**Commit:** `fd35de3` (`chore: prepare Vivah Vercel deployment`)
 
 Delivered:
 
