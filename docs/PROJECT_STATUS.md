@@ -237,7 +237,7 @@ Current limitation:
 
 **Completed:** 22 October 2026
 
-**Commit:** `fd35de3` (`chore: prepare Vivah Vercel deployment`)
+**Commits:** `fd35de3` (`chore: prepare Vivah Vercel deployment`) and `998507a` (`fix: use stable Vercel web routing config`)
 
 Delivered:
 
