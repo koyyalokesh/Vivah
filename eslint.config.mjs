@@ -10,12 +10,7 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
-    files: [
-      'apps/api/**/*.ts',
-      'apps/web/vite.config.ts',
-      'apps/web/vercel.ts',
-      '*.mjs',
-    ],
+    files: ['apps/api/**/*.ts', 'apps/web/vite.config.ts', '*.mjs'],
     languageOptions: { globals: globals.node },
   },
   {

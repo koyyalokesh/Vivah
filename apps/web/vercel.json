@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "installCommand": "npm install --production=false",
+  "routes": [
+    {
+      "src": "^/api/(.*)$",
+      "dest": "$VIVAH_API_ORIGIN/api/$1",
+      "env": ["VIVAH_API_ORIGIN"],
+      "respectOriginCacheControl": false,
+      "headers": {
+        "Cache-Control": "no-store"
+      }
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "^/(.*)$",
+      "dest": "/index.html"
+    }
+  ]
+}

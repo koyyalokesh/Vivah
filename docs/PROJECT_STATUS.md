@@ -243,7 +243,7 @@ Delivered:
 
 - Node.js 22 pinned consistently for the monorepo, web project and API project.
 - Vercel install commands retain TypeScript and other build-only dependencies when the API uses `NODE_ENV=production`.
-- Dynamic Vercel web configuration that reads the API origin from deployment settings rather than committing an account-specific hostname.
+- Vercel web routing that resolves the API origin from deployment settings rather than committing an account-specific hostname.
 - Same-origin `/api/*` forwarding to the Express project without removing the `/api` prefix.
 - Explicit no-store handling for proxied API responses and an SPA fallback for direct React route navigation.
 - Safe web environment example and complete two-project Vercel setup instructions in the README.
@@ -253,8 +253,7 @@ Verified:
 
 - Formatting, ESLint, frontend and backend TypeScript checks and production builds passed on Node.js 22.19.0.
 - 39 API tests and 15 frontend tests passed.
-- The deployment configuration generated the expected API rewrite and SPA fallback for a valid HTTPS origin.
-- Unsafe non-HTTPS and path-bearing API origins were rejected before deployment configuration could be generated.
+- The deployment configuration defines the expected API route, no-store response header and filesystem-aware SPA fallback.
 
 Current limitation:
 

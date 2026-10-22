@@ -66,7 +66,7 @@ Deploy the monorepo as two Vercel projects connected to the same GitHub reposito
 | Vivah API      | `apps/api`     | Express   |
 | Vivah Web      | `apps/web`     | Vite      |
 
-Both projects use Node.js 22. The API project detects the default Express export in `src/app.ts`; `src/server.ts` remains the local listener and is not the Vercel entry point. Each project explicitly installs its development dependencies during the Vercel build because TypeScript and Vite are build tools, while `NODE_ENV=production` is needed by the deployed API at runtime. The web project's `vercel.ts` sends `/api/*` to the API project without changing the browser URL, disables API response caching and falls back to `index.html` for React routes.
+Both projects use Node.js 22. The API project detects the default Express export in `src/app.ts`; `src/server.ts` remains the local listener and is not the Vercel entry point. Each project explicitly installs its development dependencies during the Vercel build because TypeScript and Vite are build tools, while `NODE_ENV=production` is needed by the deployed API at runtime. The web project's `vercel.json` sends `/api/*` to the API project without changing the browser URL, prevents API responses from being cached and falls back to `index.html` for React routes.
 
 Configure these environment variables in the **API project**. Use separate values for Preview and Production when both environments are enabled:
 
@@ -89,13 +89,13 @@ node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
 node -e "console.log(require('node:crypto').randomBytes(32).toString('hex'))"
 ```
 
-Configure this non-secret build-time variable in the **web project**:
+Configure this non-secret deployment-routing variable in the **web project**:
 
 ```text
 VIVAH_API_ORIGIN=https://<public Vivah API domain>
 ```
 
-Use origins only: include `https://`, omit trailing paths and query strings, and do not include a trailing slash in `APP_ORIGIN`. The web deployment fails with a clear configuration error if `VIVAH_API_ORIGIN` is missing or unsafe. No server credential belongs in the web project or in a `VITE_*` variable.
+Use origins only: include `https://`, omit trailing paths and query strings, and do not include a trailing slash in either origin variable. Add `VIVAH_API_ORIGIN` as a readable Config value rather than a secret because Vercel's routing layer must substitute it into the API route. No server credential belongs in the web project or in a `VITE_*` variable.
 
 Leave the Vercel Install Command on its repository-configured value, `npm install --production=false`, for both projects. This keeps build-only packages available even though the API deployment sets `NODE_ENV=production`; Vercel still bundles only the runtime code required by each deployment.
 
@@ -131,13 +131,13 @@ Future features use domain routers, controllers, services, and wedding-scoped pe
 
 ## Configuration and hosting direction
 
-Actual `.env` files and Vercel's local `.vercel/` metadata are ignored; commit examples only. The backend validates its port, environment, MongoDB URI, application origin and session duration. `API_PROXY_TARGET` configures the local Vite server. `VIVAH_API_ORIGIN` configures Vercel's server-side web rewrite. Neither value is bundled into browser code. Never put server credentials in `VITE_*` variables.
+Actual `.env` files and Vercel's local `.vercel/` metadata are ignored; commit examples only. The backend validates its port, environment, MongoDB URI, application origin and session duration. `API_PROXY_TARGET` configures the local Vite server. `VIVAH_API_ORIGIN` configures Vercel's server-side web route. Neither value is bundled into browser code. Never put server credentials in `VITE_*` variables.
 
 Passwords are hashed with Argon2id. A custom server-side session stores only a SHA-256 token hash in MongoDB; the browser receives the raw random token in the `HttpOnly` `vivah_session` cookie. Sessions expire after seven days by default. Production cookies are also `Secure`, and state-changing auth requests validate their browser origin.
 
 Signup and login limits are stored in MongoDB so every Vercel instance shares the same counters. Client identifiers are protected with HMAC-SHA-256 and expired counters are removed through a TTL index. Set a unique random `RATE_LIMIT_HMAC_SECRET` of at least 32 characters in production; the example development value must never be used for deployment.
 
-The intended hosting uses separate Vercel web and API projects. Vercel can import the default-exported Express app at `src/app.ts`. The web project includes production API rewrites, no-store API headers and the SPA fallback; Vite's proxy remains local only. MongoDB Atlas, Vercel projects, domains and secrets must still be provisioned outside the repository.
+The intended hosting uses separate Vercel web and API projects. Vercel can import the default-exported Express app at `src/app.ts`. The web project includes a production API route, no-store API headers and the SPA fallback; Vite's proxy remains local only. MongoDB Atlas, Vercel projects, domains and secrets must still be provisioned outside the repository.
 
 ## Scope and next task
 
