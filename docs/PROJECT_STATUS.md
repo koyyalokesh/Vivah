@@ -1,7 +1,7 @@
 # Vivah Project Status
 
-**Last updated:** 22 October 2026
-**Current state:** Vercel deployment configuration prepared; production deployment is next
+**Last updated:** 1 November 2026
+**Current state:** Production is live at `https://www.vivah.today`; authenticated dashboard foundation completed
 **Current branch:** `dev`
 
 ## Purpose
@@ -252,14 +252,63 @@ Delivered:
 Verified:
 
 - Formatting, ESLint, frontend and backend TypeScript checks and production builds passed on Node.js 22.19.0.
-- 39 API tests and 15 frontend tests passed.
+- 39 API tests and 18 frontend tests passed.
 - The deployment configuration defines the expected API route, no-store response header and filesystem-aware SPA fallback.
 
 Current limitation:
 
-- The Vercel web and API projects, Atlas production database, public domains and production secrets must be created in their respective dashboards.
-- A live production smoke test is still required after deployment.
+- Production setup and live smoke testing were completed in the production deployment milestone below.
 - The backend currently trusts one exact `APP_ORIGIN`; arbitrary Vercel preview URLs cannot perform protected mutations.
+
+### 9. Production deployment
+
+**Status:** Completed
+
+**Completed:** 31 October 2026
+
+**Commits:** `fd35de3`, `998507a`, `cc34d5e`
+
+Delivered:
+
+- Vivah web application deployed on Vercel at `https://www.vivah.today`.
+- Express API deployed as a separate Vercel project and exposed to the browser through the web project's same-origin `/api/*` proxy.
+- Custom domain DNS, production request origin, secure session cookies, MongoDB Atlas and Resend domain configuration completed.
+
+Verified:
+
+- The production homepage and proxied health and authentication endpoints responded on the custom domain.
+- Same-origin browser requests reached the separate API deployment without exposing its hostname to frontend code.
+
+Current limitation:
+
+- Production invitation email delivery should continue to be monitored through Vercel and Resend logs while the application has low traffic.
+
+### 10. Authenticated dashboard foundation
+
+**Status:** Completed
+
+**Completed:** 31 October 2026
+
+**Commit:** `1da5794`
+
+Delivered:
+
+- Responsive authenticated workspace shell with desktop navigation, mobile drawer, account context, appearance control and logout.
+- Wedding overview dashboard backed by the authenticated wedding and membership context.
+- Real wedding date, location, time zone, role, countdown and member-count summary.
+- Honest empty and coming-soon states for Events, Tasks, Guests, Expenses, Vendors and Gallery instead of invented planning data.
+- Existing Wedding Details and Wedding Members screens integrated into the workspace layout.
+- Wedding onboarding remains the entry experience for authenticated users who do not yet have a wedding.
+
+Verified:
+
+- Formatting, ESLint, frontend and backend TypeScript checks and production builds passed.
+- 39 API tests and 18 frontend tests passed.
+- Authenticated desktop and mobile browser QA passed, including the 320px layout and keyboard-accessible mobile navigation.
+
+Current limitation:
+
+- Planning module cards are navigation placeholders until their corresponding V1 features are implemented.
 
 ## Current working capabilities
 
@@ -275,6 +324,8 @@ Current limitation:
 - Wedding Member listing, secure invitations, acceptance, role changes and removal.
 - Consistent Light, Dark and System appearance across existing screens.
 - Authenticated workspace landing page for implemented wedding and member tools.
+- Responsive authenticated dashboard shell and wedding overview.
+- Production deployment at `https://www.vivah.today`.
 - Express API health endpoint.
 - Local frontend-to-backend API proxy.
 - Shared repository tooling for development, formatting, linting, type checking, and builds.
@@ -282,19 +333,15 @@ Current limitation:
 ## Not implemented yet
 
 - Password reset.
-- Dashboard business data.
 - Events, tasks, guests, invitations, RSVPs, expenses, or vendors.
 - Wedding website publishing or livestream configuration.
 - Cloudflare R2 galleries and photo uploads.
 - Background and bulk guest email jobs.
 - Google Places vendor discovery.
-- Live production deployment and post-deployment verification.
 
 ## Next recommended milestone
 
-Create the Vercel web and API projects, configure their production environment variables and complete the live deployment smoke test.
-
-After deployment is verified, build wedding Events incrementally, starting with event listing and creation before edit, archive and cover-image work.
+Build wedding Events incrementally, starting with the wedding-scoped event list and event creation. Follow with event editing and archiving before adding Tasks or dashboard aggregation.
 
 ## Update rule
 
