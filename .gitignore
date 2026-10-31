@@ -3,6 +3,7 @@ dist/
 coverage/
 *.tsbuildinfo
 *.log
+.qa-dashboard-*.png
 .vercel/
 .env
 .env.*

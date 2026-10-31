@@ -11,6 +11,7 @@ import { WeddingEditPage } from './routes/WeddingEditPage';
 import { MembersPage } from './routes/MembersPage';
 import { MemberInvitationPage } from './routes/MemberInvitationPage';
 import { ThemeProvider } from './theme/ThemeProvider';
+import { AppShell } from './components/app-shell/AppShell';
 
 function AppProviders() {
   return (
@@ -42,8 +43,22 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: '/app', element: <AppHomePage /> },
-          { path: '/app/wedding/edit', element: <WeddingEditPage /> },
-          { path: '/app/members', element: <MembersPage /> },
+          {
+            path: '/app/wedding/edit',
+            element: (
+              <AppShell>
+                <WeddingEditPage />
+              </AppShell>
+            ),
+          },
+          {
+            path: '/app/members',
+            element: (
+              <AppShell>
+                <MembersPage />
+              </AppShell>
+            ),
+          },
         ],
       },
       {
