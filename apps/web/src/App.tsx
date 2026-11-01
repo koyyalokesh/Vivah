@@ -12,6 +12,9 @@ import { MembersPage } from './routes/MembersPage';
 import { MemberInvitationPage } from './routes/MemberInvitationPage';
 import { ThemeProvider } from './theme/ThemeProvider';
 import { AppShell } from './components/app-shell/AppShell';
+import { EventsPage } from './routes/EventsPage';
+import { EventFormPage } from './routes/EventFormPage';
+import { EventDetailsPage } from './routes/EventDetailsPage';
 
 function AppProviders() {
   return (
@@ -56,6 +59,38 @@ const router = createBrowserRouter([
             element: (
               <AppShell>
                 <MembersPage />
+              </AppShell>
+            ),
+          },
+          {
+            path: '/app/events',
+            element: (
+              <AppShell>
+                <EventsPage />
+              </AppShell>
+            ),
+          },
+          {
+            path: '/app/events/new',
+            element: (
+              <AppShell>
+                <EventFormPage />
+              </AppShell>
+            ),
+          },
+          {
+            path: '/app/events/:eventId',
+            element: (
+              <AppShell>
+                <EventDetailsPage />
+              </AppShell>
+            ),
+          },
+          {
+            path: '/app/events/:eventId/edit',
+            element: (
+              <AppShell>
+                <EventFormPage />
               </AppShell>
             ),
           },

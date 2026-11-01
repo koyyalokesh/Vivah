@@ -12,6 +12,9 @@ import type { WeddingServiceContract } from './modules/wedding/wedding.types.js'
 import { createMembersRouter } from './modules/members/members.router.js';
 import { memberService } from './modules/members/members.service.js';
 import type { MemberServiceContract } from './modules/members/members.types.js';
+import { createEventsRouter } from './modules/events/events.router.js';
+import { eventService } from './modules/events/events.service.js';
+import type { EventServiceContract } from './modules/events/events.types.js';
 
 type AppOptions = {
   service?: AuthServiceContract;
@@ -19,6 +22,7 @@ type AppOptions = {
   databaseMiddleware?: RequestHandler;
   enableRateLimit?: boolean;
   memberService?: MemberServiceContract;
+  eventService?: EventServiceContract;
 };
 
 export function createApp(options: AppOptions = {}) {
@@ -26,6 +30,7 @@ export function createApp(options: AppOptions = {}) {
   const service = options.service ?? authService;
   const currentWeddingService = options.weddingService ?? weddingService;
   const currentMemberService = options.memberService ?? memberService;
+  const currentEventService = options.eventService ?? eventService;
   const databaseMiddleware =
     options.databaseMiddleware ?? ensureDatabaseConnection;
 
@@ -50,6 +55,11 @@ export function createApp(options: AppOptions = {}) {
     '/api',
     databaseMiddleware,
     createMembersRouter(service, currentMemberService),
+  );
+  app.use(
+    '/api/events',
+    databaseMiddleware,
+    createEventsRouter(service, currentEventService),
   );
   app.use((_req, res) => {
     res

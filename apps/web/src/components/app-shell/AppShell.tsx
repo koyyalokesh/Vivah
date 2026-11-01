@@ -7,18 +7,12 @@ type AppShellProps = { children: ReactNode };
 
 const availableLinks = [
   { label: 'Overview', to: '/app', icon: 'home', end: true },
+  { label: 'Events', to: '/app/events', icon: 'events' },
   { label: 'Members', to: '/app/members', icon: 'members' },
   { label: 'Wedding details', to: '/app/wedding/edit', icon: 'wedding' },
 ] as const;
 
-const plannedLinks = [
-  'Events',
-  'Tasks',
-  'Guests',
-  'Vendors',
-  'Expenses',
-  'Gallery',
-];
+const plannedLinks = ['Tasks', 'Guests', 'Vendors', 'Expenses', 'Gallery'];
 
 function NavIcon({ name }: { name: string }) {
   const paths: Record<string, ReactNode> = {
@@ -38,6 +32,12 @@ function NavIcon({ name }: { name: string }) {
       <>
         <path d="M7 4v3M17 4v3M4 9h16M5 6h14a1 1 0 0 1 1 1v13H4V7a1 1 0 0 1 1-1Z" />
         <path d="m9.2 14 2.8 2.5 2.8-2.5a2 2 0 0 0-2.8-2.8 2 2 0 0 0-2.8 2.8Z" />
+      </>
+    ),
+    events: (
+      <>
+        <path d="M7 3v3M17 3v3M4 8h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1Z" />
+        <path d="M8 12h3M8 16h8M14 12h2" />
       </>
     ),
     menu: (
