@@ -1,7 +1,7 @@
 # Vivah Project Status
 
 **Last updated:** 1 November 2026
-**Current state:** Production is live at `https://www.vivah.today`; authenticated dashboard foundation completed
+**Current state:** Production is live at `https://www.vivah.today`; wedding Events feature completed locally
 **Current branch:** `dev`
 
 ## Purpose
@@ -310,6 +310,35 @@ Current limitation:
 
 - Planning module cards are navigation placeholders until their corresponding V1 features are implemented.
 
+### 11. Wedding Events
+
+**Status:** Completed locally; deployment pending
+
+**Completed:** 1 November 2026
+
+**Commit:** `d571c0c` (`feat: add wedding events management`)
+
+Delivered:
+
+- Wedding-scoped event persistence and authenticated list, create, detail, update and archive APIs for Admins and Managers.
+- UTC event timestamps rendered in the wedding time zone, optional preset types and custom names, venue, address, description and dress-code details.
+- Validation for explicit-offset ISO timestamps and end times after start times, including validation after partial-update merging.
+- Soft archiving that preserves referenced event history and keeps archived events read-only.
+- Cross-wedding protection through membership-derived wedding scope and conflict detection for concurrent edits.
+- Responsive event list, empty, loading, error, create, detail, edit, archived and archive-confirmation experiences in Light and Deep Navy Dark themes.
+- Events promoted to an active destination in the shared authenticated desktop sidebar and mobile drawer.
+
+Verified:
+
+- Formatting, ESLint, frontend and backend TypeScript checks and production builds passed.
+- 48 API tests and 22 frontend tests passed, including focused event tenancy, validation, archive, stale-update conflict and wedding-time-zone conversion tests.
+
+Current limitation:
+
+- Event cover-image upload remains deferred until the Cloudflare R2 milestone.
+- Dashboard event aggregation remains deferred to a later increment.
+- Production deployment and live production smoke testing are still pending.
+
 ## Current working capabilities
 
 - Public Vivah marketing homepage.
@@ -320,6 +349,7 @@ Current limitation:
 - Protected `/app` route with wedding setup and restored wedding context.
 - Wedding creation with automatic Admin membership.
 - Wedding details editing for Admin and Manager roles.
+- Wedding event listing, creation, details, editing and archiving for Admin and Manager roles.
 - Unsaved wedding-edit draft recovery within the current browser session.
 - Wedding Member listing, secure invitations, acceptance, role changes and removal.
 - Consistent Light, Dark and System appearance across existing screens.
@@ -333,7 +363,7 @@ Current limitation:
 ## Not implemented yet
 
 - Password reset.
-- Events, tasks, guests, invitations, RSVPs, expenses, or vendors.
+- Tasks, guests, invitations, RSVPs, expenses, or vendors.
 - Wedding website publishing or livestream configuration.
 - Cloudflare R2 galleries and photo uploads.
 - Background and bulk guest email jobs.
@@ -341,7 +371,7 @@ Current limitation:
 
 ## Next recommended milestone
 
-Build wedding Events incrementally, starting with the wedding-scoped event list and event creation. Follow with event editing and archiving before adding Tasks or dashboard aggregation.
+Build wedding Tasks incrementally, starting with wedding-scoped task listing and creation, including optional event and member assignments. Follow with task editing and completion before adding dashboard aggregation.
 
 ## Update rule
 
