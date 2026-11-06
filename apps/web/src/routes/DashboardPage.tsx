@@ -10,12 +10,14 @@ const modules = [
     description: 'Build your wedding schedule',
     symbol: '◇',
     tone: 'rose',
+    to: '/app/events',
   },
   {
     title: 'Tasks',
     description: 'Keep planning work on track',
     symbol: '✓',
     tone: 'blue',
+    to: '/app/tasks',
   },
   {
     title: 'Guests',
@@ -147,7 +149,13 @@ export function DashboardPage() {
               <h3>{module.title}</h3>
               <p>{module.description}</p>
             </div>
-            <span className="dashboard-coming-soon">Coming soon</span>
+            {'to' in module ? (
+              <Link className="dashboard-tool-link" to={module.to!}>
+                Open
+              </Link>
+            ) : (
+              <span className="dashboard-coming-soon">Coming soon</span>
+            )}
           </article>
         ))}
       </section>

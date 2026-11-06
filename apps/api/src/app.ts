@@ -15,6 +15,9 @@ import type { MemberServiceContract } from './modules/members/members.types.js';
 import { createEventsRouter } from './modules/events/events.router.js';
 import { eventService } from './modules/events/events.service.js';
 import type { EventServiceContract } from './modules/events/events.types.js';
+import { createTasksRouter } from './modules/tasks/tasks.router.js';
+import { taskService } from './modules/tasks/tasks.service.js';
+import type { TaskServiceContract } from './modules/tasks/tasks.types.js';
 
 type AppOptions = {
   service?: AuthServiceContract;
@@ -23,6 +26,7 @@ type AppOptions = {
   enableRateLimit?: boolean;
   memberService?: MemberServiceContract;
   eventService?: EventServiceContract;
+  taskService?: TaskServiceContract;
 };
 
 export function createApp(options: AppOptions = {}) {
@@ -31,6 +35,7 @@ export function createApp(options: AppOptions = {}) {
   const currentWeddingService = options.weddingService ?? weddingService;
   const currentMemberService = options.memberService ?? memberService;
   const currentEventService = options.eventService ?? eventService;
+  const currentTaskService = options.taskService ?? taskService;
   const databaseMiddleware =
     options.databaseMiddleware ?? ensureDatabaseConnection;
 
@@ -60,6 +65,11 @@ export function createApp(options: AppOptions = {}) {
     '/api/events',
     databaseMiddleware,
     createEventsRouter(service, currentEventService),
+  );
+  app.use(
+    '/api/tasks',
+    databaseMiddleware,
+    createTasksRouter(service, currentTaskService),
   );
   app.use((_req, res) => {
     res

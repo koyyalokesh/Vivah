@@ -1,7 +1,7 @@
 # Vivah Project Status
 
-**Last updated:** 1 November 2026
-**Current state:** Production is live at `https://www.vivah.today`; wedding Events feature completed locally
+**Last updated:** 6 November 2026
+**Current state:** Production is live at `https://www.vivah.today`; wedding Tasks feature completed locally
 **Current branch:** `dev`
 
 ## Purpose
@@ -339,6 +339,35 @@ Current limitation:
 - Dashboard event aggregation remains deferred to a later increment.
 - Production deployment and live production smoke testing are still pending.
 
+### 12. Wedding Task management
+
+**Status:** Completed locally; deployment pending
+
+**Completed:** 6 November 2026
+
+**Commit:** Not committed
+
+Delivered:
+
+- Wedding-scoped task persistence and authenticated paginated list, create, detail, update and hard-delete APIs for Admins and Managers.
+- Optional assignment to a current Wedding Member and optional association with an active Wedding Event, both validated within the authenticated wedding boundary.
+- To Do, In Progress and Completed workflows with server-owned completion timestamps, reopening support and optimistic conflict detection.
+- Optional wedding-local due dates, overdue presentation, Low/Medium/High priorities and filters for status, priority, Event, assignee and My Tasks.
+- Existing removed-member and archived-event associations remain visible while new cross-wedding, removed-member and archived-event associations are rejected.
+- Responsive task list, empty, loading, error, create, detail, edit, completion, reopening and removal-confirmation experiences in Light and Deep Navy Dark themes.
+- Tasks promoted to an active destination in the shared authenticated desktop sidebar and mobile drawer; Events and Tasks are active from the dashboard planning tools.
+
+Verified:
+
+- Formatting, ESLint, frontend and backend TypeScript checks and production builds passed.
+- 57 API tests and 25 frontend tests passed, including focused task tenancy, assignment integrity, unassigned-task filtering, removed-member preservation, completion, reopening, conflict, deletion and wedding-time-zone conversion tests.
+- Local authenticated browser QA verified unassigned creation and filtering, later assignment, editing, completion and reopening, removal confirmation and cleanup, unavailable-task recovery, mobile drawer focus/Escape behavior, and the 320px layout without horizontal overflow.
+
+Current limitation:
+
+- The dashboard Open Tasks panel remains a placeholder; dashboard task aggregation is deferred to a focused follow-up.
+- Production deployment and live production smoke testing are still pending.
+
 ## Current working capabilities
 
 - Public Vivah marketing homepage.
@@ -350,6 +379,7 @@ Current limitation:
 - Wedding creation with automatic Admin membership.
 - Wedding details editing for Admin and Manager roles.
 - Wedding event listing, creation, details, editing and archiving for Admin and Manager roles.
+- Wedding task listing, filtering, creation, assignment, editing, completion, reopening and removal for Admin and Manager roles.
 - Unsaved wedding-edit draft recovery within the current browser session.
 - Wedding Member listing, secure invitations, acceptance, role changes and removal.
 - Consistent Light, Dark and System appearance across existing screens.
@@ -363,7 +393,7 @@ Current limitation:
 ## Not implemented yet
 
 - Password reset.
-- Tasks, guests, invitations, RSVPs, expenses, or vendors.
+- Guests, invitations, RSVPs, expenses, or vendors.
 - Wedding website publishing or livestream configuration.
 - Cloudflare R2 galleries and photo uploads.
 - Background and bulk guest email jobs.
@@ -371,7 +401,7 @@ Current limitation:
 
 ## Next recommended milestone
 
-Build wedding Tasks incrementally, starting with wedding-scoped task listing and creation, including optional event and member assignments. Follow with task editing and completion before adding dashboard aggregation.
+Build the Guest directory incrementally, starting with wedding-scoped guest listing and creation plus optional active-Event invitations. Follow with guest editing and deletion before adding secure invitation links, delivery and event-level RSVP flows.
 
 ## Update rule
 

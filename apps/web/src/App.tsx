@@ -15,6 +15,9 @@ import { AppShell } from './components/app-shell/AppShell';
 import { EventsPage } from './routes/EventsPage';
 import { EventFormPage } from './routes/EventFormPage';
 import { EventDetailsPage } from './routes/EventDetailsPage';
+import { TasksPage } from './routes/TasksPage';
+import { TaskFormPage } from './routes/TaskFormPage';
+import { TaskDetailsPage } from './routes/TaskDetailsPage';
 
 function AppProviders() {
   return (
@@ -91,6 +94,38 @@ const router = createBrowserRouter([
             element: (
               <AppShell>
                 <EventFormPage />
+              </AppShell>
+            ),
+          },
+          {
+            path: '/app/tasks',
+            element: (
+              <AppShell>
+                <TasksPage />
+              </AppShell>
+            ),
+          },
+          {
+            path: '/app/tasks/new',
+            element: (
+              <AppShell>
+                <TaskFormPage />
+              </AppShell>
+            ),
+          },
+          {
+            path: '/app/tasks/:taskId',
+            element: (
+              <AppShell>
+                <TaskDetailsPage />
+              </AppShell>
+            ),
+          },
+          {
+            path: '/app/tasks/:taskId/edit',
+            element: (
+              <AppShell>
+                <TaskFormPage />
               </AppShell>
             ),
           },
