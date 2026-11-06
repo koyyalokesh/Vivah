@@ -345,7 +345,7 @@ Current limitation:
 
 **Completed:** 6 November 2026
 
-**Commit:** Not committed
+**Commit:** `2ebcc88` (`feat: add wedding task management`)
 
 Delivered:
 
